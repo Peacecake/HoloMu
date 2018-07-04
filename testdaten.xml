@@ -1,0 +1,32 @@
+<daten>
+<item id="2o8ru2309">
+  <name>Comodore64</name>
+  <category>computer</category>
+  <year>1988</year>
+  <manufacturer>HansWurst</manufacturer>
+  <description>Ein kurze Beschreibung des Objekts</description>
+  <moreinfos>
+    <moreinfoitem type="Geschichte">
+      blablabla
+    </moreinfoitem>
+    <moreinfoitem type="Technische Spezifikation">
+      blablabla
+    </moreinfoitem>
+  </moreinfos>
+</item>
+<item id="sadfjasödg">
+  <name>Lenovo Yoga 2</name>
+  <category>Laptop</category>
+  <year>2015</year>
+  <manufacturer>Lenovo</manufacturer>
+  <description></description>
+  <moreinfos>
+    <moreinfoitem type="Positionen">
+      - tablet
+      - labtop
+      - tent
+    <moreinfoitem>
+  <moreinfos>
+</item>
+
+</daten>
