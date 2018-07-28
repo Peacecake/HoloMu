@@ -28,6 +28,12 @@ namespace HoloMu.Networking
             this.Type = type;
         }
 
+        public ApiRequest(RequestType type, byte[] file)
+        {
+            this.Type = type;
+            this.File = file;
+        }
+
         public void HandleResult(bool isSuccessful, string resultText, string error)
         {
             switch (this.Type)

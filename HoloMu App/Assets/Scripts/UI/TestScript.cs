@@ -1,4 +1,6 @@
-﻿using HoloMu.Networking;
+﻿using System;
+using HoloMu.Networking;
+using HoloMu.Persistance;
 using HoloToolkit.Unity.InputModule;
 using UnityEngine;
 
@@ -7,12 +9,19 @@ namespace HoloMu.UI
     public class TestScript : MonoBehaviour, IInputClickHandler
     {
         public ApiConnector ApiConnector;
+        public PhotoCapturer PhotoCapturer;
 
         private Exhibit _exhibit;
 
         private void Start()
         {
-            ApiConnector.OnApiResult += OnApiResult;
+            ApiConnector.ResponseRetrieved += OnApiResult;
+            PhotoCapturer.PhotoTaken += OnPhotoTaken;
+        }
+
+        private void OnPhotoTaken(object sender, byte[] file)
+        {
+            ApiConnector.MakeRequest(new ApiRequest(RequestType.StartRecognize, file));
         }
 
         private void OnApiResult(object sender, ApiRequest request)
@@ -32,7 +41,7 @@ namespace HoloMu.UI
 
         public void OnInputClicked(InputClickedEventData eventData)
         {
-            ApiConnector.MakeRequest(new ApiRequest(RequestType.Test));
+            PhotoCapturer.TakePicture();
         }
     }
 }
