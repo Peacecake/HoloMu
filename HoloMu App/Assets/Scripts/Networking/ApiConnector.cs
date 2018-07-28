@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Net;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -9,35 +8,58 @@ namespace HoloMu.Networking
     {
         public event ApiRequestResultHandler OnApiResult;
 
-        private const string EXAMPLE_URL = "https://jsonplaceholder.typicode.com/posts/1";
+        private UnityWebRequest _www;
 
-        public void MakeTextRequest()
+        public void MakeRequest(ApiRequest request)
         {
-            StartCoroutine(GetTextFrom(EXAMPLE_URL));
+            switch(request.Type)
+            {
+                case RequestType.StartRecognize:
+                    StartCoroutine(Upload(request));
+                    break;
+                case RequestType.GetRecommendation:
+                    StartCoroutine(Get(request));
+                    break;
+                case RequestType.Test:
+                    StartCoroutine(GetTextFrom(request));
+                    break;
+            }
         }
 
-        private IEnumerator GetTextFrom(string url)
+        private IEnumerator Upload(ApiRequest request)
         {
-            using (UnityWebRequest www = UnityWebRequest.Get(url))
+            using(_www = UnityWebRequest.Put(request.URL, request.File))
             {
-                yield return www.SendWebRequest();
+                yield return _www.SendWebRequest();
+                HandleRequestResult(_www, request);
+            }
+        }
 
-                if (www.isNetworkError || www.isHttpError)
-                {
-                    if (this.OnApiResult != null)
-                    {
-                        OnApiResult.Invoke(this, false, www.error);
-                    }
-                }
-                else
-                {
-                    if (this.OnApiResult != null)
-                    {
-                        string xmlString = "<item id='2o8ru2309'><name>Comodore64</name><category>computer</category><year>1988</year><manufacturer>HansWurst</manufacturer><description>Ein kurze Beschreibung des Objekts</description><moreinfos><moreinfoitem type='Geschichte'>blablabla</moreinfoitem><moreinfoitem type='Technische Spezifikation'>blablabla</moreinfoitem></moreinfos></item>";
-                        // OnApiResult.Invoke(this, true, www.downloadHandler.text);
-                        OnApiResult.Invoke(this, true, xmlString);
-                    }
-                }
+        private IEnumerator Get(ApiRequest request)
+        {
+            using (_www = UnityWebRequest.Get(request.URL))
+            {
+                yield return _www.SendWebRequest();
+                HandleRequestResult(_www, request);
+            }
+        }
+
+        private IEnumerator GetTextFrom(ApiRequest request)
+        {
+            using (_www = UnityWebRequest.Get(request.URL))
+            {
+                yield return _www.SendWebRequest();
+                HandleRequestResult(_www, request);
+            }
+        }
+
+        private void HandleRequestResult(UnityWebRequest www, ApiRequest request)
+        {
+            request.HandleResult(!(www.isNetworkError || www.isHttpError), www.downloadHandler.text, www.error);
+
+            if (this.OnApiResult != null)
+            {
+                this.OnApiResult.Invoke(this, request);
             }
         }
     }

@@ -1,39 +1,38 @@
 ﻿using HoloMu.Networking;
 using HoloToolkit.Unity.InputModule;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace HoloMu.UI
 {
     public class TestScript : MonoBehaviour, IInputClickHandler
     {
-
         public ApiConnector ApiConnector;
-        public Exhibit exhibit;
+
+        private Exhibit _exhibit;
 
         private void Start()
         {
             ApiConnector.OnApiResult += OnApiResult;
         }
 
-        private void OnApiResult(object sender, bool isSuccessful, string result)
+        private void OnApiResult(object sender, ApiRequest request)
         {
-            if (isSuccessful)
+            ImageRecognitionResult result = request.Result as ImageRecognitionResult;
+            if (result.IsSuccessful)
             {
-                exhibit.InitializeFromXmlString(result);
-                Debug.Log(exhibit);
+                _exhibit = result.Exhibit;
+                Debug.Log(_exhibit);
+                Debug.Log("Call to " + request.URL + " successful!");
             }
             else
             {
-                Debug.LogError(result);
+                Debug.LogError(result.ErrorMessage);
             }
         }
 
         public void OnInputClicked(InputClickedEventData eventData)
         {
-            ApiConnector.MakeTextRequest();
+            ApiConnector.MakeRequest(new ApiRequest(RequestType.Test));
         }
     }
 }

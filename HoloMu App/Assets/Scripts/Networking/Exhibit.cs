@@ -1,61 +1,26 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 
-public class Exhibit : MonoBehaviour
+namespace HoloMu.Networking
 {
-    public string ID { get { return _id; } set { _id = value; } }
-    public string Name { get { return _name; } set { _name = value; } }
-    public string Category { get { return _category; } set { _category = value; } }
-    public string Year { get { return _year; } set { _year = value; } }
-    public string Manufacturer { get { return _manufacturer; } set { _manufacturer = value; } }
-    public string Description { get { return _description; } set { _description = value; } }
-    public Dictionary<string, string> AdditionalInformation
+    public class Exhibit
     {
-        get
+        public string ID { get; set; }
+        public string Name { get; set; }
+        public string Category { get; set; }
+        public string Year { get; set; }
+        public string Manufacturer { get; set; }
+        public string Description { get; set; }
+        public Dictionary<string, string> AdditionalInformation { get; set; }
+
+        public Exhibit()
         {
-            if (_additionalInformation == null)
-            {
-                _additionalInformation = new Dictionary<string, string>();
-            }
-            return _additionalInformation;
+            ID = "";
+            Name = "";
+            Category = "";
+            Year = "";
+            Manufacturer = "";
+            Description = "";
+            AdditionalInformation = new Dictionary<string, string>();
         }
-        set
-        {
-            _additionalInformation = value;
-        }
-    }
-
-    private string _id;
-    private string _name;
-    private string _category;
-    private string _year;
-    private string _manufacturer;
-    private string _description;
-    private Dictionary<string, string> _additionalInformation;
-
-	private void Start ()
-    {
-        _id = "";
-        _name = "";
-        _category = "";
-        _year = "";
-        _manufacturer = "";
-        _description = "";
-        _additionalInformation = new Dictionary<string, string>();	
-	}
-
-    public void InitializeFromXmlString(string xmlString)
-    {
-        XMLParser parser = new XMLParser();
-        Exhibit e = parser.ParseExhibit(xmlString);
-        _id = e.ID;
-        _name = e.Name;
-        _category = e.Category;
-        _year = e.Year;
-        _manufacturer = e.Manufacturer;
-        _description = e.Description;
-        _additionalInformation = e.AdditionalInformation;
-
     }
 }

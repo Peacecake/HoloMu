@@ -2,15 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RecommenderResult : MonoBehaviour {
+namespace HoloMu.Networking
+{
+    public class RecommenderResult : RequestResult
+    {
+        public RecommenderResult(bool isSuccessful, string errorMessage) : base(isSuccessful, errorMessage)
+        {
+        }
+    }
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 }

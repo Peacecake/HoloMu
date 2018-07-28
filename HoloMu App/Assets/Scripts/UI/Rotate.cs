@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
 
-public class Rotate : MonoBehaviour
+namespace HoloMu.UI
 {
-    public float RotationSpeed = 5.0f;
-
-	private void Update ()
+    public class Rotate : MonoBehaviour
     {
-        transform.Rotate(Vector3.up * Time.deltaTime, this.RotationSpeed);	
-	}
+        public float RotationSpeed = 5.0f;
+
+	    private void Update ()
+        {
+            transform.Rotate(Vector3.up * Time.deltaTime, this.RotationSpeed);	
+	    }
+    }
 }
