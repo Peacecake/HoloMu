@@ -10,6 +10,7 @@ namespace HoloMu.UI
     {
         public ApiConnector ApiConnector;
         public PhotoCapturer PhotoCapturer;
+        public InfoPanel InfoPanel;
 
         private Exhibit _exhibit;
 
@@ -21,7 +22,7 @@ namespace HoloMu.UI
 
         private void OnPhotoTaken(object sender, byte[] file)
         {
-            ApiConnector.MakeRequest(new ApiRequest(RequestType.StartRecognize, file));
+            ApiConnector.MakeRequest(new ApiRequest(RequestType.Test, file));
         }
 
         private void OnApiResult(object sender, ApiRequest request)
@@ -30,6 +31,7 @@ namespace HoloMu.UI
             if (result.IsSuccessful)
             {
                 _exhibit = result.Exhibit;
+                InfoPanel.Exhibit = _exhibit;
                 Debug.Log(_exhibit);
                 Debug.Log("Call to " + request.URL + " successful!");
             }
