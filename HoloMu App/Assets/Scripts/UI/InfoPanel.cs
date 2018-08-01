@@ -1,5 +1,4 @@
 ﻿using HoloMu.Networking;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,17 +20,16 @@ namespace HoloMu.UI
             }
         }
 
+        public Button ShowInfoButtonPrefab;
         public Text TitleText;
         public Text MainText;
         public GameObject ButtonContainer;
-        public Button[] Buttons;
+        
 
         private Exhibit _exhibit;
-        private List<string> _additionalInfoTexts;
 
         private void OnExhibitSet()
         {
-            _additionalInfoTexts = new List<string>();
             if (_exhibit != null)
             {
                 TitleText.text = _exhibit.Name;
@@ -40,16 +38,47 @@ namespace HoloMu.UI
                 int index = 0;
                 foreach(KeyValuePair<string, string> info in _exhibit.AdditionalInformation)
                 {
-                    Buttons[index].GetComponentInChildren<Text>().text = info.Key;
-                    _additionalInfoTexts.Add(info.Value);
+                    AddButtons(info.Key, index);
                     index++;
                 }
             }
         }
 
+        /// <summary>
+        /// Adds an instance of <code>ShowInfoButtonPrefab</code> to the <code>ButtonContainer</code>
+        /// </summary>
+        /// <param name="buttonText"></param>
+        /// <param name="index"></param>
+        private void AddButtons(string buttonText, int index)
+        {
+            // Calculate button properties
+            float height = ButtonContainer.GetComponent<RectTransform>().rect.height;
+            float width = ButtonContainer.GetComponent<RectTransform>().rect.width / _exhibit.AdditionalInformation.Count;
+            Vector3 localScale = Vector3.one;
+            Vector2 anchorPoints = Vector2.up;
+            Vector3 position = new Vector3(index * width, 0, 0);
+
+            Button btn = Instantiate(ShowInfoButtonPrefab);
+            btn.transform.parent = ButtonContainer.transform;
+
+            // Configure button
+            btn.GetComponentInChildren<Text>().text = buttonText;
+            btn.onClick.AddListener(delegate { OnButtonClick(btn); });
+            btn.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, height);
+            btn.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, width);
+            btn.GetComponent<RectTransform>().localScale = localScale;
+            btn.GetComponent<RectTransform>().anchorMin = anchorPoints;
+            btn.GetComponent<RectTransform>().anchorMax = anchorPoints;
+            btn.GetComponent<RectTransform>().pivot = anchorPoints;
+            btn.GetComponent<RectTransform>().anchoredPosition3D = position;
+        }
+
+        /// <summary>
+        /// Callback that handle click on additional info button. Gets text from AdditionalInformation Dictionary by button text.
+        /// </summary>
+        /// <param name="btn"></param>
         public void OnButtonClick(Button btn)
         {
-            Debug.Log("CLICK BUTTON: " + btn.name);
             string value = "";
             bool success = _exhibit.AdditionalInformation.TryGetValue(btn.GetComponentInChildren<Text>().text, out value);
             if (success)
@@ -58,7 +87,7 @@ namespace HoloMu.UI
             } 
             else
             {
-                MainText.text = "Fehler";
+                MainText.text = _exhibit.Description;
             }
         }
     }

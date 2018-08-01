@@ -39,7 +39,7 @@ namespace HoloMu.Networking
             switch (this.Type)
             {
                 case RequestType.Test:
-                    resultText = "<item id='2o8ru2309'><name>Comodore64</name><category>computer</category><year>1988</year><manufacturer>HansWurst</manufacturer><description>Ein kurze Beschreibung des Objekts</description><moreinfos><moreinfoitem type='Geschichte'>blablabla</moreinfoitem><moreinfoitem type='Technische Spezifikation'>blablabla</moreinfoitem></moreinfos></item>";
+                    resultText = "<item id='2o8ru2309'><name>Comodore64</name><category>computer</category><year>1988</year><manufacturer>HansWurst</manufacturer><description>Ein kurze Beschreibung des Objekts</description><moreinfos><moreinfoitem type='Geschichte'>Die Geschichte des Commodore ist wahnsinnig spannend</moreinfoitem><moreinfoitem type='Technische Spezifikation'>Das technische BlaBla ist nicht so spannend.</moreinfoitem><moreinfoitem type='Anwendungen'>Zocken!!!</moreinfoitem></moreinfos></item>";
                     this.Result = new ImageRecognitionResult(isSuccessful, error, resultText);
                     break;
                 case RequestType.StartRecognize:
