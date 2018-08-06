@@ -1,0 +1,2 @@
+include flaskapp/schema.sql
+global-exclude *.pyc

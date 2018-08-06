@@ -24,6 +24,15 @@ def create_app(test_config=None):
     def hello_world():
         return "Hello World"
 
+    @app.route("/recognize", methods=["PUT"])
+    def recognize_image():
+        # Handle file upload: http://flask.pocoo.org/docs/1.0/patterns/fileuploads/
+        return "<item id='2o8ru2309'><name>Comodore64</name><category>computer</category><year>1988</year><manufacturer>HansWurst</manufacturer><description>Ein kurze Beschreibung des Objekts</description><moreinfos><moreinfoitem type='Geschichte'>Die Geschichte des Commodore ist wahnsinnig spannend</moreinfoitem><moreinfoitem type='Technische Spezifikation'>Das technische BlaBla ist nicht so spannend.</moreinfoitem><moreinfoitem type='Anwendungen'>Zocken!!!</moreinfoitem></moreinfos></item>"
+
+    @app.route("/recommend")
+    def recommend_exhibit():
+        return "Alle Exponate sind super!"
+
     from . import db
     db.init_app(app)
 
