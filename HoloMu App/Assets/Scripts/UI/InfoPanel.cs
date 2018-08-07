@@ -24,6 +24,8 @@ namespace HoloMu.UI
         public Text TitleText;
         public Text MainText;
         public GameObject ButtonContainer;
+        public GameObject Canvas;
+        public GameObject Preloader;
         
 
         private Exhibit _exhibit;
@@ -42,6 +44,12 @@ namespace HoloMu.UI
                     index++;
                 }
             }
+        }
+
+        public void SetLoadingState(bool isLoading)
+        {
+            Preloader.SetActive(isLoading);
+            Canvas.SetActive(!isLoading);
         }
 
         /// <summary>

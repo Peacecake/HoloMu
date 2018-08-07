@@ -10,9 +10,10 @@ namespace HoloMu.UI
     {
         public ApiConnector ApiConnector;
         public PhotoCapturer PhotoCapturer;
-        public InfoPanel InfoPanel;
+        public GameObject InfoPanel;
 
         private Exhibit _exhibit;
+        private GameObject _infoPanel;
 
         private void Start()
         {
@@ -27,22 +28,25 @@ namespace HoloMu.UI
 
         private void OnApiResult(object sender, ApiRequest request)
         {
+            _infoPanel.GetComponent<InfoPanel>().SetLoadingState(false);
+
             ImageRecognitionResult result = request.Result as ImageRecognitionResult;
             if (result.IsSuccessful)
             {
                 _exhibit = result.Exhibit;
-                InfoPanel.Exhibit = _exhibit;
-                Debug.Log(_exhibit);
-                Debug.Log("Call to " + request.URL + " successful!");
+                GetComponent<MeshRenderer>().enabled = false;
             }
             else
             {
+                Destroy(_infoPanel);
                 Debug.LogError(result.ErrorMessage);
             }
         }
 
         public void OnInputClicked(InputClickedEventData eventData)
         {
+            _infoPanel = Instantiate(InfoPanel, transform.position, Quaternion.identity);
+            _infoPanel.GetComponent<InfoPanel>().SetLoadingState(true);
             PhotoCapturer.TakePicture();
         }
     }
