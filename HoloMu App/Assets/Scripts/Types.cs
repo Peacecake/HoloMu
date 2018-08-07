@@ -1,4 +1,4 @@
 ﻿namespace HoloMu
 {
-    public enum RequestType { StartRecognize = 0, GetRecommendation = 1, Test = 2 };
+    public enum RequestType { recognize = 0, recommend = 1, Test = 2 };
 }

@@ -1554,6 +1554,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf426b9acfcc5d4499fe179409edde2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BaseUrl: http://127.0.0.1:5000
 --- !u!4 &1213139577
 Transform:
   m_ObjectHideFlags: 0

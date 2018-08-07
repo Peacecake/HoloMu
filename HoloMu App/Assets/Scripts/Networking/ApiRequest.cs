@@ -13,15 +13,16 @@ namespace HoloMu.Networking
         {
             get
             {
-                // @TODO: Remove test url
-                if (this.Type.Equals(RequestType.Test)) return ENDPOINTS[(int)this.Type];
-                return BASE_URL + ENDPOINTS[(int) this.Type];
+                return _baseUrl + "/" + this.Type.ToString();
+            }
+            set
+            {
+                _baseUrl = value;
             }
         }
         public RequestResult Result { get; private set; }
 
-        private static readonly string[] ENDPOINTS = new string[] { "recognize", "recommend", "https://jsonplaceholder.typicode.com/posts/1" };
-        private const string BASE_URL = "http://localhost:8080/";
+        private string _baseUrl = "";
 
         public ApiRequest(RequestType type)
         {
@@ -42,10 +43,10 @@ namespace HoloMu.Networking
                     resultText = "<item id='2o8ru2309'><name>Comodore64</name><category>computer</category><year>1988</year><manufacturer>HansWurst</manufacturer><description>Ein kurze Beschreibung des Objekts</description><moreinfos><moreinfoitem type='Geschichte'>Die Geschichte des Commodore ist wahnsinnig spannend</moreinfoitem><moreinfoitem type='Technische Spezifikation'>Das technische BlaBla ist nicht so spannend.</moreinfoitem><moreinfoitem type='Anwendungen'>Zocken!!!</moreinfoitem></moreinfos></item>";
                     this.Result = new ImageRecognitionResult(isSuccessful, error, resultText);
                     break;
-                case RequestType.StartRecognize:
+                case RequestType.recognize:
                     this.Result = new ImageRecognitionResult(isSuccessful, error, resultText);
                     break;
-                case RequestType.GetRecommendation:
+                case RequestType.recommend:
                     this.Result = new RecommenderResult(isSuccessful, error);
                     break;
                 default:

@@ -23,7 +23,7 @@ namespace HoloMu.UI
 
         private void OnPhotoTaken(object sender, byte[] file)
         {
-            ApiConnector.MakeRequest(new ApiRequest(RequestType.Test, file));
+            ApiConnector.MakeRequest(new ApiRequest(RequestType.recognize, file));
         }
 
         private void OnApiResult(object sender, ApiRequest request)
@@ -34,6 +34,7 @@ namespace HoloMu.UI
             if (result.IsSuccessful)
             {
                 _exhibit = result.Exhibit;
+                _infoPanel.GetComponent<InfoPanel>().Exhibit = _exhibit;
                 GetComponent<MeshRenderer>().enabled = false;
             }
             else

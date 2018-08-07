@@ -8,16 +8,19 @@ namespace HoloMu.Networking
     {
         public event ApiRequestResultHandler ResponseRetrieved;
 
+        public string BaseUrl;
+
         private UnityWebRequest _www;
 
         public void MakeRequest(ApiRequest request)
         {
+            request.URL = this.BaseUrl;
             switch(request.Type)
             {
-                case RequestType.StartRecognize:
+                case RequestType.recognize:
                     StartCoroutine(Upload(request));
                     break;
-                case RequestType.GetRecommendation:
+                case RequestType.recommend:
                     StartCoroutine(Get(request));
                     break;
                 case RequestType.Test:
