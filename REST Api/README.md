@@ -2,6 +2,18 @@
 
 ## Benutzung
 
+### Einfacher Weg
+
+- Falls noch nicht geschehen, das entsprechende bash script ausführbar machen:
+
+```
+  chmod 700 <datei name>
+```
+
+- Dann das script ausführen (Für Windows geht es leider noch nicht)
+
+### Ausführlicher Weg
+
 - Wenn noch keine Virtual Environment erstellt wurde (venv Ordner exisitert?):
   - python3 -m venv venv
   - pip install flask
