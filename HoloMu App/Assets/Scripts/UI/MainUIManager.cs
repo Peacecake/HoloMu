@@ -13,6 +13,7 @@ namespace HoloMu.UI
         public PhotoCapturer PhotoCapturer;
 
         public Text ErrorText;
+        public Text RecommenderText;
         public float DisplayTextDuration = 4f;
 
 	    private void Start ()
@@ -21,6 +22,7 @@ namespace HoloMu.UI
             this.ApiConnector.ResponseRetrieved += OnApiResponseRetrieved;
             this.PhotoCapturer.ErrorOccured += OnErrorOccured;
             this.ErrorText.text = "";
+            this.RecommenderText.text = "";
 	    }
 
         private void OnApiResponseRetrieved(object sender, ApiRequest request)
@@ -30,7 +32,7 @@ namespace HoloMu.UI
                 RecommenderResult result = request.Result as RecommenderResult;
                 if (result.IsSuccessful)
                 {
-                    Debug.Log(result.Recommendation);
+                    StartCoroutine(ShowTextForSeconds(RecommenderText, result.Recommendation, DisplayTextDuration));
                 }
             }
         }
@@ -44,7 +46,7 @@ namespace HoloMu.UI
         {
             textField.text = text;
             yield return new WaitForSeconds(time);
-            ErrorText.text = "";
+            textField.text = "";
         }
 
         public void HandleExhibitClose(Exhibit exhibit)
