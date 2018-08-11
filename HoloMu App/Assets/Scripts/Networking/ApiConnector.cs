@@ -7,6 +7,7 @@ namespace HoloMu.Networking
     public class ApiConnector : MonoBehaviour
     {
         public event ApiRequestResultHandler ResponseRetrieved;
+        public event ErrorHandler ErrorOccurred;
 
         public string BaseUrl;
 
@@ -59,6 +60,10 @@ namespace HoloMu.Networking
         private void HandleRequestResult(UnityWebRequest www, ApiRequest request)
         {
             request.HandleResult(!(www.isNetworkError || www.isHttpError), www.downloadHandler.text, www.error);
+            if (!request.Result.IsSuccessful && this.ErrorOccurred != null)
+            {
+                this.ErrorOccurred.Invoke(this, new Error(ErrorType.ApiRequest, www.error));
+            }
 
             if (this.ResponseRetrieved != null)
             {

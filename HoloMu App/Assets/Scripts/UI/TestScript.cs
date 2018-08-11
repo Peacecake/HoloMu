@@ -44,7 +44,6 @@ namespace HoloMu.UI
             {
                 SetEnabled(true);
                 Destroy(_infoPanel);
-                Debug.LogError(result.ErrorMessage);
             }
         }
 

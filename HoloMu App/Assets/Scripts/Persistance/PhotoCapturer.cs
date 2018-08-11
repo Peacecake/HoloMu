@@ -15,6 +15,10 @@ namespace HoloMu.Persistance
         /// Gets triggered when photo capture process is done. If this was not successful, <code>file</code> is null.
         /// </summary>
         public event PhotoCaptureHandler PhotoTaken;
+        /// <summary>
+        /// Gets triggered when something during the process of photo making and saving goes wrong.
+        /// </summary>
+        public event ErrorHandler ErrorOccured;
 
         /// <summary>
         /// Check this, if the taken image should not get deleted.
@@ -61,7 +65,10 @@ namespace HoloMu.Persistance
             }
             else
             {
-                Debug.LogError("Unable to start photo mode!");
+                if (this.ErrorOccured != null)
+                {
+                    this.ErrorOccured.Invoke(this, new Error(ErrorType.PhotoCapture, "Unable to start photo mode!"));
+                }
             }
         }
 
@@ -76,7 +83,10 @@ namespace HoloMu.Persistance
             }
             else
             {
-                Debug.Log("Failed to save Photo to disk");
+                if (this.ErrorOccured != null)
+                {
+                    this.ErrorOccured.Invoke(this, new Error(ErrorType.PhotoCapture, "Failed to save Photo to disk!"));
+                }
             }
 
             if (this.PhotoTaken != null)
@@ -89,10 +99,10 @@ namespace HoloMu.Persistance
         {
             _photoCapture.Dispose();
             _photoCapture = null;
-            if (!this.KeepImage)
-            {
-                File.Delete(_filePath);
-            }
+            //if (!this.KeepImage)
+            //{
+            //    File.Delete(_filePath);
+            //}
             _filePath = "";
         }
     }
