@@ -1,5 +1,6 @@
 ﻿using HoloMu.Networking;
 using HoloMu.Persistance;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,9 +18,22 @@ namespace HoloMu.UI
 	    private void Start ()
         {
             this.ApiConnector.ErrorOccurred += OnErrorOccured;
+            this.ApiConnector.ResponseRetrieved += OnApiResponseRetrieved;
             this.PhotoCapturer.ErrorOccured += OnErrorOccured;
             this.ErrorText.text = "";
 	    }
+
+        private void OnApiResponseRetrieved(object sender, ApiRequest request)
+        {
+            if (request.Type.Equals(RequestType.recommend))
+            {
+                RecommenderResult result = request.Result as RecommenderResult;
+                if (result.IsSuccessful)
+                {
+                    Debug.Log(result.Recommendation);
+                }
+            }
+        }
 
         private void OnErrorOccured(object sender, Error error)
         {
@@ -31,6 +45,12 @@ namespace HoloMu.UI
             textField.text = text;
             yield return new WaitForSeconds(time);
             ErrorText.text = "";
+        }
+
+        public void HandleExhibitClose(Exhibit exhibit)
+        {
+            ApiRequest recommendRequest = new ApiRequest(RequestType.recommend);
+            ApiConnector.MakeRequest(recommendRequest);
         }
     }
 }

@@ -31,11 +31,13 @@ namespace HoloMu.UI
         
 
         private Exhibit _exhibit;
-        private float _initialPlayerDistance = 0;
+        private Vector3 _initialPlayerPosition;
+        private MainUIManager _uiManager;
 
         private void Awake()
         {
-            _initialPlayerDistance = GetDistanceFromPlayer();
+            _initialPlayerPosition = GameObject.FindGameObjectWithTag("MainCamera").transform.position;
+            _uiManager = GameObject.Find("MainUI").GetComponent<MainUIManager>();
         }
 
         private void OnDestroy()
@@ -50,9 +52,18 @@ namespace HoloMu.UI
 
         private void Update()
         {
-            float currentDistance = GetDistanceFromPlayer();
-            if (currentDistance - _initialPlayerDistance > DestroyDistance)
+            // Check if player has wolked away from info panel
+            float currentDistance = GetPlayerDistanceFromInitialPosition();
+            if (currentDistance > DestroyDistance)
             {
+                if (_uiManager != null)
+                {
+                    _uiManager.HandleExhibitClose(_exhibit);
+                }
+                else
+                {
+                    Debug.LogWarning("Could Not Find UIManager");
+                }
                 Destroy(gameObject);
             }
 
@@ -67,14 +78,14 @@ namespace HoloMu.UI
             }
         }
 
-        private float GetDistanceFromPlayer()
+        private float GetPlayerDistanceFromInitialPosition()
         {
             Transform player = GameObject.FindGameObjectWithTag("MainCamera").transform;
             if (player == null)
             {
                 return 0;
             }
-            return Vector3.Distance(transform.position, player.position);
+            return Vector3.Distance(_initialPlayerPosition, player.position);
         }
 
         private void OnExhibitSet()

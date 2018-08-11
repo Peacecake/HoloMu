@@ -47,7 +47,7 @@ namespace HoloMu.Networking
                     this.Result = new ImageRecognitionResult(isSuccessful, error, resultText);
                     break;
                 case RequestType.recommend:
-                    this.Result = new RecommenderResult(isSuccessful, error);
+                    this.Result = new RecommenderResult(isSuccessful, error, resultText);
                     break;
                 default:
                     this.Result = new RequestResult(isSuccessful, error);

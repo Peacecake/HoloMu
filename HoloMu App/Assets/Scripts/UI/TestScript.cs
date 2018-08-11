@@ -32,18 +32,21 @@ namespace HoloMu.UI
 
         private void OnApiResult(object sender, ApiRequest request)
         {
-            _infoPanel.GetComponent<InfoPanel>().SetLoadingState(false);
+            if (request.Type.Equals(RequestType.recognize))
+            {
+                _infoPanel.GetComponent<InfoPanel>().SetLoadingState(false);
 
-            ImageRecognitionResult result = request.Result as ImageRecognitionResult;
-            if (result.IsSuccessful)
-            {
-                _exhibit = result.Exhibit;
-                PopulateInfoPanel();
-            }
-            else
-            {
-                SetEnabled(true);
-                Destroy(_infoPanel);
+                ImageRecognitionResult result = request.Result as ImageRecognitionResult;
+                if (result.IsSuccessful)
+                {
+                    _exhibit = result.Exhibit;
+                    PopulateInfoPanel();
+                }
+                else
+                {
+                    SetEnabled(true);
+                    Destroy(_infoPanel);
+                }
             }
         }
 
