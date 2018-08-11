@@ -14,9 +14,13 @@ namespace HoloMu.UI
 
         private Exhibit _exhibit;
         private GameObject _infoPanel;
+        private Rotate _rotator;
+        private bool _isClickable;
 
         private void Start()
         {
+            _isClickable = true;
+            _rotator = GetComponent<Rotate>();
             ApiConnector.ResponseRetrieved += OnApiResult;
             PhotoCapturer.PhotoTaken += OnPhotoTaken;
         }
@@ -34,21 +38,51 @@ namespace HoloMu.UI
             if (result.IsSuccessful)
             {
                 _exhibit = result.Exhibit;
-                _infoPanel.GetComponent<InfoPanel>().Exhibit = _exhibit;
-                GetComponent<MeshRenderer>().enabled = false;
+                PopulateInfoPanel();
             }
             else
             {
+                SetEnabled(true);
                 Destroy(_infoPanel);
                 Debug.LogError(result.ErrorMessage);
             }
         }
 
-        public void OnInputClicked(InputClickedEventData eventData)
+        private void PopulateInfoPanel()
+        {
+            _infoPanel.GetComponent<InfoPanel>().Exhibit = _exhibit;
+        }
+
+        private void InitInfoPanel()
         {
             _infoPanel = Instantiate(InfoPanel, transform.position, Quaternion.identity);
             _infoPanel.GetComponent<InfoPanel>().SetLoadingState(true);
-            PhotoCapturer.TakePicture();
+            _infoPanel.transform.SetParent(transform);
+        }
+
+        public void OnInputClicked(InputClickedEventData eventData)
+        {
+            if (!_isClickable) return;
+
+            SetEnabled(false);
+            InitInfoPanel();
+
+            if (_exhibit == null)
+            {
+                PhotoCapturer.TakePicture();
+            }
+            else
+            {
+                _infoPanel.GetComponent<InfoPanel>().SetLoadingState(false);
+                PopulateInfoPanel();
+            }
+        }
+
+        public void SetEnabled(bool isEnabled)
+        {
+            _isClickable = isEnabled;
+            _rotator.Enabled = isEnabled;
+            GetComponent<MeshRenderer>().enabled = isEnabled;
         }
     }
 }

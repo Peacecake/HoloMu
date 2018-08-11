@@ -26,9 +26,56 @@ namespace HoloMu.UI
         public GameObject ButtonContainer;
         public GameObject Canvas;
         public GameObject Preloader;
+        public bool AlwaysFacePlayer = true;
+        public float DestroyDistance = 5f;
         
 
         private Exhibit _exhibit;
+        private float _initialPlayerDistance = 0;
+
+        private void Awake()
+        {
+            _initialPlayerDistance = GetDistanceFromPlayer();
+        }
+
+        private void OnDestroy()
+        {
+            // Display Hologram again
+            TestScript holo = GetComponentInParent<TestScript>();
+            if (holo != null)
+            {
+                holo.SetEnabled(true);
+            }
+        }
+
+        private void Update()
+        {
+            float currentDistance = GetDistanceFromPlayer();
+            if (currentDistance - _initialPlayerDistance > DestroyDistance)
+            {
+                Destroy(gameObject);
+            }
+
+            if (this.AlwaysFacePlayer)
+            {
+                Debug.LogWarning("Always Face Player does not work yet!");
+                this.AlwaysFacePlayer = false;
+                return;
+                //Transform player = GameObject.FindGameObjectWithTag("MainCamera").transform;
+                //transform.LookAt(player);
+                //Vector3.RotateTowards(transform.position, player.position, 0.5f, Time.deltaTime);
+            }
+        }
+
+        private float GetDistanceFromPlayer()
+        {
+            Transform player = GameObject.FindGameObjectWithTag("MainCamera").transform;
+            if (player == null)
+            {
+                return 0;
+            }
+            return Vector3.Distance(transform.position, player.position);
+        }
 
         private void OnExhibitSet()
         {
@@ -67,7 +114,8 @@ namespace HoloMu.UI
             Vector3 position = new Vector3(index * width, 0, 0);
 
             Button btn = Instantiate(ShowInfoButtonPrefab);
-            btn.transform.parent = ButtonContainer.transform;
+            btn.transform.SetParent(ButtonContainer.transform, false);
+            // btn.transform.parent = ButtonContainer.transform;
 
             // Configure button
             btn.GetComponentInChildren<Text>().text = buttonText;
