@@ -142,3 +142,8 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# Object Recognition
+Object_Recognition/images
+Object_Recognition/test_images
+Object_Recognition/tf_files
