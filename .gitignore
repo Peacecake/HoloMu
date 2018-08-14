@@ -145,3 +145,8 @@ venv.bak/
 
 # tmp folder regarding img upload
 /tmp
+
+# Object Recognition
+Object_Recognition/images
+Object_Recognition/test_images
+Object_Recognition/tf_files
