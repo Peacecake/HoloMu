@@ -2,6 +2,7 @@ import os
 
 from flask import Flask, request, Response
 from uploader import Uploader
+from xmlParser import XMLParser
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=None)
@@ -30,8 +31,17 @@ def create_app(test_config=None):
         upload_result = upl.upload()
         if upload_result is not True:
             return Response(upload_result, status=500)
+
+        # Image recognition stuff comes here
+        print ("Recognizing image: " + upl.uploaded_file)
+
+        xml = XMLParser(os.path.join(os.getcwd(), "flaskapp", "data.xml"))
+        xml.parse()
+        xml_string = xml.get_item_string_by_id("235")
+
         upl.delete_file()
-        return "<item id='2o8ru2309'><name>Comodore64</name><category>computer</category><year>1988</year><manufacturer>HansWurst</manufacturer><description>Ein kurze Beschreibung des Objekts</description><moreinfos><moreinfoitem type='Geschichte'>Die Geschichte des Commodore ist wahnsinnig spannend</moreinfoitem><moreinfoitem type='Technische Spezifikation'>Das technische BlaBla ist nicht so spannend.</moreinfoitem><moreinfoitem type='Anwendungen'>Zocken!!!</moreinfoitem></moreinfos></item>"
+
+        return xml_string
 
     @app.route("/recommend")
     def recommend_exhibit():
