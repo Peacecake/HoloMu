@@ -79,7 +79,10 @@
   <moreinfos>
     <moreinfoitem type="Hardware">
         - MOS 6502 1 MHz Prozessor
-        
+        - 24 KB read-only Speicher (ROM)
+        - 96 KB Speicher
+        - Betriebssystem Microsoft BASIC
+        - 12" monochromes Display mit 80 Spalten und 25 Reihen
     </moreinfoitem>
 
   </moreinfos>
