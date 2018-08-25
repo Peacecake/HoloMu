@@ -9,7 +9,6 @@ class XMLParser:
         self.root = None
 
     def parse(self):
-        print(self.xmlFilePath)
         if not os.path.exists(self.xmlFilePath):
             return False
         self.tree = ET.parse(self.xmlFilePath)

@@ -3,6 +3,7 @@ import os
 from flask import Flask, request, Response
 from uploader import Uploader
 from xmlParser import XMLParser
+from jsonParser import JsonParser
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=None)
@@ -35,13 +36,13 @@ def create_app(test_config=None):
         # Image recognition stuff comes here
         print ("Recognizing image: " + upl.uploaded_file)
 
-        xml = XMLParser(os.path.join(os.getcwd(), "flaskapp", "data.xml"))
-        xml.parse()
-        xml_string = xml.get_item_string_by_id("235")
+        jp = JsonParser(os.path.join(os.getcwd(), "flaskapp", "data.JSON"))
+        jp.parse()
+        exh = jp.get_item_by_id(235)
 
-        upl.delete_file()
+        # upl.delete_file()
 
-        return xml_string
+        return exh
 
     @app.route("/recommend")
     def recommend_exhibit():
