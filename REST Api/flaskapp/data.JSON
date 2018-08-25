@@ -1,0 +1,141 @@
+{
+    "exhibits": [
+        {
+            "id": 174,
+            "name": "Osborne 1",
+            "category": "Tragbare Computer",
+            "year": "1981 - 1983",
+            "manufacturer": "Osborne Computer Corporation",
+            "description": "Der Osborne 1 war der erste kommerziell erhältliche tragbare Computer. Sein Erfinder war Adam Osborne. Der Rechner wog 11 kg, weshalb er im Vergleich zu späteren Laptops im Englischen meist als luggable computer, also als schleppbarer Computer (deutsches Wortspiel Schlepptop) bezeichnet wird. Bei der Markeinführung kostete er in den USA 1795 US-Dollar.",
+            "moreinfos": [
+                {
+                    "name": "Hardware",
+                    "datatype": "array",
+                    "data": [
+                        "Zwei einseitige 5 1/4 Diskettenlaufwerke mit 40 Tracks",
+                        "Zilog-Z80-CPU mit 4 MHz",
+                        "64 Kilobyte RAM",
+                        "69 Tasten-Keyboard",
+                        "5 Zoll-Display"
+                    ]
+                },
+                {
+                    "name": "Trivia",
+                    "datatype": "text",
+                    "data": "Der Osborne 1 bzw. sein Nachfolger, der Osborne Executive, ist kurz in dem Film 'Das Philadelphia Experiment' (1984) zu sehen. In derselben Szene sieht man auch einen Commodore 64."
+                }
+            ]
+        },
+        {
+            "id": 235,
+            "name": "Compaq Portable PC III",
+            "category":"Tragbare Computer",
+            "year": "1987",
+            "manufacturer": "Compaq",
+            "description": "Der Portable III entspricht bereits dem IBM AT, ist aber deutlich schneller. Von seinen Vorgängern unterscheidet er sich durch die Verwendung eines Plasmabildschirms anstelle eines Röhrenmonitors und durch die fehlenden Erweiterungsslots.",
+            "moreinfos": [
+                {
+                    "name": "Hardware",
+                    "datatype": "array",
+                    "data": [
+                        "Intel 80286 12 MHz Prozessor",
+                        "40 MB Festplattenkapazität",
+                        "Bis zu 6,6 MB RAM",
+                        "Anschlussmöglichkeit für einen externen CGA-Monitor",
+                        "Betriebssystem MS-DOS"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 723,
+            "name": "Toshiba T3200SX",
+            "category":"Tragbare Computer",
+            "year": "1989",
+            "manufacturer": "Toshiba",
+            "description": "Der T3200SX von Toshiba war der Versuch, einen tragbaren Computer ohne Leistungseinbußen gegenüber einem Desktop-PC zu bauen und ein wichtiger Schritt in die Richtung der heutigen Notebooks. Ein weiterer Vorteil gegenüber anderen Geräten war, neben der Mobilität, die freie Wahl des Betriebssystems.",
+            "moreinfos":[
+                {
+                    "name":"Hardware",
+                    "datatype":"array",
+                    "data": [
+                        "Intel 386 SX 16MHz",
+                        "Hauptspeicher 40 MB (extern)",
+                        "1 - 13 MB RAM"
+                    ]
+                },
+                {
+                    "name": "Trivia",
+                    "datatype": "text",
+                    "data": "Dieser Rechner wurde anlässlich der Eröffnung des Toshiba Werkes in Regensburg 1990 der Stadt Regensburg geschenkt."
+                }
+            ]
+        },
+        {
+            "id": 120,
+            "name": "Apple iMac G3 DV",
+            "category": "Personal Computer",
+            "year": "1998 - 2003",
+            "manufacturer": "Apple",
+            "description": "Der Apple iMac ist ein von Apple produzierter Computer. Grundsätzliche Idde des iMacs war ein sogenanntes 'All-in-one'-Gehäuse mit möglichst einfacher Bedienbarkeit für eine technisch weniger versierte Zielgruppe. Mit diesem Gerät knüpfte Apple an frühere, in den 80er Jahren produzierte Rechner an, in denen Rechner und Minibildschirm in einem Gerät integriert waren.",
+            "moreinfos":[
+                {
+                    "name": "Hardware",
+                    "datatype": "array",
+                    "data": [
+                        "PowerPC 750 (G3) 400MHz Prozessor",
+                        "64 MB RAM, maximal 1 GB RAM",
+                        "ATI Rage 128 VR 2D/3D Grafikkarte mit 8 MB",
+                        "Bis zu 128 MB Festplattenkapazität",
+                        "Betriebssystem Mac Os 9"
+                    ]
+                },
+                {
+                    "name": "Trivia",
+                    "datatype":"text",
+                    "data": "Das \"i\" im iMac hat, laut Keynote von 1998, folgende Bedeutungen: internet, individual, instruct, inform und inspire."
+                }
+            ]
+        },
+        {
+            "id": 125,
+            "name": "Commodore 8296",
+            "category": "Personal Computer",
+            "year": "1984",
+            "manufacturer": "Commodore",
+            "description": "Der Commodore 8296 ist das letzte und auch best ausgestatteste Modell der 8000er-Serie von Commodore. Im Vergleich zum ersten Modell, dem Commodore 8008 mit 8 KB hat sich vorallem beim Speicher einiges verändert. Für diese Geräte stand schon diverse Software, wie das Datenbankprogramm Ozz, das Textverarbeitungsprogramm Wordpro und die Tabellenkalkulation VisiCalc zur Verfügung.",
+            "moreinfos":[
+                {
+                    "name": "Hardware",
+                    "datatype": "array",
+                    "data": [
+                        "MOS 6502 1 MHz Prozessor",
+                        "24 KB read-only Speicher (ROM)",
+                        "96 KB Speicher",
+                        "Betriebssystem Microsoft BASIC",
+                        "12`` monochromes Display mit 80 Spalten und 25 Reihen"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 172,
+            "name": "IBM Personal Computer Reihe 5150",
+            "category":"Personal Computer",
+            "year": "1981 - 1986",
+            "manufacturer": "IBM",
+            "description": "IBM Personal Computer (kurz IBM PC) war die Modelbezeichnung des ersten Personal Computers des US-amerikanischen Unternehmens IBM aus dem Jahr 1981. Das Unternehmen setzte damit einen informellen, weltweiten Industriestandard und definierte die bis heute aktuelle Geräteklasse der IBM-kompatiblen Personal Computer.",
+            "moreinfos":[
+                {
+                    "name":"Hardware",
+                    "datatype": "array",
+                    "data": [
+                        "Intel 8088 Prozessor mit 4,77 MHz",
+                        "16 bzw. 64 KB RAM",
+                        "Zunächst keine Festplatte, Programme wurden über Floppy Disks geladen"
+                    ]
+                }
+            ]
+        }
+    ]
+}
