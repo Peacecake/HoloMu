@@ -62,6 +62,11 @@ def read_tensor_from_image_file(file_name, input_height=299, input_width=299,
 
   return result
 
+def find_nearest(array, value):
+  array = np.asarray(array)
+  idx = (np.abs(array - value)).argmin()
+  return array[idx]
+
 def load_labels(label_file):
   label = []
   proto_as_ascii_lines = tf.gfile.GFile(label_file).readlines()
@@ -135,10 +140,14 @@ if __name__ == "__main__":
 
   print('\nEvaluation time (1-image): {:.3f}s\n'.format(end-start))
   template = "{} (score={:0.5f})"
+  value = 0.60 # to be sure the right image is recognized
   for i in top_k:
     print(template.format(labels[i], results[i]))
-    if results[i] > 0.80:
+    if results[i] > value:
       image = (labels[i])
+      print ("Recognized Image = " + str(image))
     else:
-      continue
-  print ("Recognized Image = " + str(image))
+      nearestValue= find_nearest(results, value)
+  for i in top_k:
+    if results[i] == nearestValue:
+      print ("\nNicht eindeutig erkannt!\nBester Treffer: " + str(labels[i]))

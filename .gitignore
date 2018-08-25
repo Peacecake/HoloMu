@@ -148,5 +148,5 @@ venv.bak/
 
 # Object Recognition
 Object_Recognition/images
-Object_Recognition/test_images
+Object_Recognition/test_image
 Object_Recognition/tf_files
