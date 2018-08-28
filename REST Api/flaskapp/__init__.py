@@ -26,7 +26,7 @@ def create_app(test_config=None):
     def hello_world():
         return "Hello World"
 
-    @app.route("/recognize", methods=["PUT"])
+    @app.route("/recognize", methods=["POST"])
     def recognize_image():
         upl = Uploader(request.files, "file")
         upload_result = upl.upload()
