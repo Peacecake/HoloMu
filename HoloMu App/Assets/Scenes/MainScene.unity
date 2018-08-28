@@ -925,6 +925,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 114941038341237308, guid: f3b70e8b2702df74e988fcecf682f3a5,
+        type: 2}
+      propertyPath: BaseUrl
+      value: http://192.168.0.52:5000
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f3b70e8b2702df74e988fcecf682f3a5, type: 2}
   m_IsPrefabAsset: 0
@@ -1601,7 +1606,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf426b9acfcc5d4499fe179409edde2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BaseUrl: http://127.0.0.1:5000
+  BaseUrl: http://192.168.0.52:5000
 --- !u!4 &1213139577
 Transform:
   m_ObjectHideFlags: 0
