@@ -22,7 +22,7 @@
                 {
                     "name": "Trivia",
                     "datatype": "text",
-                    "data": "Der Osborne 1 bzw. sein Nachfolger, der Osborne Executive, ist kurz in dem Film 'Das Philadelphia Experiment' (1984) zu sehen. In derselben Szene sieht man auch einen Commodore 64."
+                    "text": "Der Osborne 1 bzw. sein Nachfolger, der Osborne Executive, ist kurz in dem Film 'Das Philadelphia Experiment' (1984) zu sehen. In derselben Szene sieht man auch einen Commodore 64."
                 }
             ]
         },
@@ -67,7 +67,7 @@
                 {
                     "name": "Trivia",
                     "datatype": "text",
-                    "data": "Dieser Rechner wurde anlässlich der Eröffnung des Toshiba Werkes in Regensburg 1990 der Stadt Regensburg geschenkt."
+                    "text": "Dieser Rechner wurde anlässlich der Eröffnung des Toshiba Werkes in Regensburg 1990 der Stadt Regensburg geschenkt."
                 }
             ]
         },
@@ -93,7 +93,7 @@
                 {
                     "name": "Trivia",
                     "datatype":"text",
-                    "data": "Das \"i\" im iMac hat, laut Keynote von 1998, folgende Bedeutungen: internet, individual, instruct, inform und inspire."
+                    "text": "Das \"i\" im iMac hat, laut Keynote von 1998, folgende Bedeutungen: internet, individual, instruct, inform und inspire."
                 }
             ]
         },
