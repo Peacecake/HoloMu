@@ -8,6 +8,7 @@ def checkIfPicExists():
         if files:
             print(dirpath, 'has files')
             trainOrTest(files[0])
+            print files[0]
         if not files:
             print(dirpath, 'is empty. No Image in direcotry')
     

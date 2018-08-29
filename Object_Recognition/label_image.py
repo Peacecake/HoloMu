@@ -145,9 +145,8 @@ if __name__ == "__main__":
     print(template.format(labels[i], results[i]))
     if results[i] > value:
       image = (labels[i])
-      print ("Recognized Image = " + str(image))
+      print ("Recognized Image = " + str(image) + "\n")
     else:
       nearestValue= find_nearest(results, value)
-  for i in top_k:
-    if results[i] == nearestValue:
-      print ("\nNicht eindeutig erkannt!\nBester Treffer: " + str(labels[i]))
+      if results[i] == nearestValue:
+        print ("\nNicht eindeutig erkannt!\nBester Treffer: " + str(labels[i]))
