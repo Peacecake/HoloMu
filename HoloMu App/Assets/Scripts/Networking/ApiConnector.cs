@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -32,8 +33,11 @@ namespace HoloMu.Networking
 
         private IEnumerator Upload(ApiRequest request)
         {
-            using(_www = UnityWebRequest.Put(request.URL, request.File))
+            List<IMultipartFormSection> formData = new List<IMultipartFormSection>();
+            formData.Add(new MultipartFormFileSection("file", request.File, "test-image.png", "image/png"));
+            using(_www = UnityWebRequest.Post(request.URL, formData))
             {
+                // _www.SetRequestHeader("Content-Type", "multipart/form-data");
                 yield return _www.SendWebRequest();
                 HandleRequestResult(_www, request);
             }

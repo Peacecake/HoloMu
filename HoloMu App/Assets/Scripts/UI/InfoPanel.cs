@@ -7,7 +7,7 @@ namespace HoloMu.UI
 {
     public class InfoPanel : MonoBehaviour
     {
-        public Exhibit Exhibit
+        public SerializeableExhibit Exhibit
         {
             get
             {
@@ -30,7 +30,7 @@ namespace HoloMu.UI
         public float DestroyDistance = 5f;
         
 
-        private Exhibit _exhibit;
+        private SerializeableExhibit _exhibit;
         private Vector3 _initialPlayerPosition;
         private MainUIManager _uiManager;
 
@@ -92,13 +92,13 @@ namespace HoloMu.UI
         {
             if (_exhibit != null)
             {
-                TitleText.text = _exhibit.Name;
-                MainText.text = _exhibit.Description;
+                TitleText.text = _exhibit.name;
+                MainText.text = _exhibit.description;
 
                 int index = 0;
-                foreach(KeyValuePair<string, string> info in _exhibit.AdditionalInformation)
+                foreach(MoreInfo info in _exhibit.moreinfos)
                 {
-                    AddButtons(info.Key, index);
+                    AddButtons(info.name, index);
                     index++;
                 }
             }
@@ -119,7 +119,7 @@ namespace HoloMu.UI
         {
             // Calculate button properties
             float height = ButtonContainer.GetComponent<RectTransform>().rect.height;
-            float width = ButtonContainer.GetComponent<RectTransform>().rect.width / _exhibit.AdditionalInformation.Count;
+            float width = ButtonContainer.GetComponent<RectTransform>().rect.width / _exhibit.moreinfos.Length;
             Vector3 localScale = Vector3.one;
             Vector2 anchorPoints = Vector2.up;
             Vector3 position = new Vector3(index * width, 0, 0);
@@ -147,15 +147,41 @@ namespace HoloMu.UI
         public void OnButtonClick(Button btn)
         {
             string value = "";
-            bool success = _exhibit.AdditionalInformation.TryGetValue(btn.GetComponentInChildren<Text>().text, out value);
+            bool success = GetButtonText(btn.GetComponentInChildren<Text>().text, out value);
             if (success)
             {
                 MainText.text = value;
             } 
             else
             {
-                MainText.text = _exhibit.Description;
+                MainText.text = _exhibit.description;
             }
+        }
+
+        private bool GetButtonText(string key, out string value)
+        {
+            value = "";
+
+            foreach(MoreInfo info in _exhibit.moreinfos)
+            {
+                if (info.name.Equals(key))
+                {
+                    if (info.datatype == "text")
+                    {
+                        value = info.text;
+                    }
+                    else
+                    {
+                        foreach(string point in info.data)
+                        {
+                            value += "- " + point + "\n";
+                        }
+                    }
+
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

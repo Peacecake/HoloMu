@@ -12,7 +12,7 @@ namespace HoloMu.UI
         public PhotoCapturer PhotoCapturer;
         public GameObject InfoPanel;
 
-        private Exhibit _exhibit;
+        private SerializeableExhibit _exhibit;
         private GameObject _infoPanel;
         private Rotate _rotator;
         private bool _isClickable;
@@ -39,7 +39,7 @@ namespace HoloMu.UI
                 ImageRecognitionResult result = request.Result as ImageRecognitionResult;
                 if (result.IsSuccessful)
                 {
-                    _exhibit = result.Exhibit;
+                    _exhibit = result.SExhibit;
                     PopulateInfoPanel();
                 }
                 else
