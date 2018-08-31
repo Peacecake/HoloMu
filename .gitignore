@@ -150,3 +150,7 @@ venv.bak/
 Object_Recognition/images
 Object_Recognition/test_image
 Object_Recognition/tf_files
+
+REST Api/Object_Recognition/images
+REST Api/Object_Recognition/test_image
+REST Api/Object_Recognition/tf_files
