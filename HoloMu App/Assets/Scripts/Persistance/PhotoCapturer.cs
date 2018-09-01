@@ -1,7 +1,9 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.XR.WSA.WebCam;
+using Vuforia;
 
 namespace HoloMu.Persistance
 {
@@ -34,6 +36,8 @@ namespace HoloMu.Persistance
         /// </summary>
         public void TakePicture()
         {
+            VuforiaBehaviour.Instance.enabled = false;
+            // GameObject.Find("ARCamera").SetActive(false);
             PhotoCapture.CreateAsync(false, OnPhotoCaptureCreated);
         }
 
@@ -51,7 +55,15 @@ namespace HoloMu.Persistance
                 pixelFormat = CapturePixelFormat.BGRA32
             };
 
-            captureObject.StartPhotoModeAsync(c, OnPhotoModeStarted);
+            try
+            {
+                captureObject.StartPhotoModeAsync(c, OnPhotoModeStarted);
+            }
+            catch(Exception e)
+            {
+                // Console.Write(e.Message);
+                Debug.Log(e.Message);
+            }
         }
 
         private void OnPhotoModeStarted(PhotoCapture.PhotoCaptureResult result)
@@ -97,6 +109,9 @@ namespace HoloMu.Persistance
 
         private void OnStoppedPhotoMode(PhotoCapture.PhotoCaptureResult result)
         {
+            VuforiaBehaviour.Instance.enabled = true;
+            // GameObject.Find("ARCamera").SetActive(true);
+
             _photoCapture.Dispose();
             _photoCapture = null;
             //if (!this.KeepImage)
