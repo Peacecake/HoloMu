@@ -41,7 +41,6 @@ def create_app(test_config=None):
         exh = jp.get_item_by_id(235)
 
         # upl.delete_file()
-
         return exh
 
     @app.route("/recommend")
