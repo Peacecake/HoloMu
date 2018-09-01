@@ -49,7 +49,7 @@ namespace HoloMu.UI
             textField.text = "";
         }
 
-        public void HandleExhibitClose(Exhibit exhibit)
+        public void HandleExhibitClose(SerializeableExhibit exhibit)
         {
             ApiRequest recommendRequest = new ApiRequest(RequestType.recommend);
             ApiConnector.MakeRequest(recommendRequest);

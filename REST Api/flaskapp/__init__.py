@@ -4,6 +4,7 @@ from flask import Flask, request, Response
 from uploader import Uploader
 from xmlParser import XMLParser
 from jsonParser import JsonParser
+from Object_Recognition import trainAndTest
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=None)
@@ -34,6 +35,7 @@ def create_app(test_config=None):
             return Response(upload_result, status=500)
 
         # Image recognition stuff comes here
+        trainAndTest.main(upl.uploaded_file)
         print ("Recognizing image: " + upl.uploaded_file)
 
         jp = JsonParser(os.path.join(os.getcwd(), "flaskapp", "data.JSON"))
