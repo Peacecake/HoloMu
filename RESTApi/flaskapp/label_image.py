@@ -75,9 +75,8 @@ def load_labels(label_file):
   return label
 
 if __name__ == "__main__":
-  #file_name = "tf_files/flower_photos/daisy/3475870145_685a19116d.jpg"
-  model_file = "tf_files/retrained_graph.pb"
-  label_file = "tf_files/retrained_labels.txt"
+  model_file = "flaskapp/tf_files/retrained_graph.pb"
+  label_file = "flaskapp/tf_files/retrained_labels.txt"
   input_height = 299
   input_width = 299
   input_mean = 128
@@ -138,14 +137,15 @@ if __name__ == "__main__":
   top_k = results.argsort()[-5:][::-1]
   labels = load_labels(label_file)
 
-  print('\nEvaluation time (1-image): {:.3f}s\n'.format(end-start))
+  #print('\nEvaluation time (1-image): {:.3f}s\n'.format(end-start))
   template = "{} (score={:0.5f})"
   value = 0.60 # to be sure the right image is recognized
   for i in top_k:
-    print(template.format(labels[i], results[i]))
+    #print(template.format(labels[i], results[i]))
     if results[i] > value:
       image = (labels[i])
-      print ("Recognized Image = " + str(image) + "\n")
+      print (image)
+      #print ("Recognized Image = " + str(image) + "\n")
     else:
       nearestValue= find_nearest(results, value)
       if results[i] == nearestValue:
