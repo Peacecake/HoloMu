@@ -7,6 +7,8 @@ namespace HoloMu.UI
 {
     public class InfoPanel : MonoBehaviour
     {
+        public event InfoPanelDestroyHandler InfoPanelDestroy;
+
         public SerializeableExhibit Exhibit
         {
             get
@@ -42,12 +44,19 @@ namespace HoloMu.UI
 
         private void OnDestroy()
         {
+            if (this.InfoPanelDestroy != null)
+                this.InfoPanelDestroy.Invoke(gameObject);
+
             // Display Hologram again
-            TestScript holo = GetComponentInParent<TestScript>();
-            if (holo != null)
-            {
-                holo.SetEnabled(true);
-            }
+            //TestScript holo = GetComponentInParent<TestScript>();
+            //if (holo != null)
+            //{
+            //    holo.SetEnabled(true);
+            //}
+            //else
+            //{
+            //    Debug.LogWarning("Could not find Holo in Parent");
+            //}
         }
 
         private void Update()

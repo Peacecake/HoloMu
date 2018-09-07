@@ -492,7 +492,7 @@ Transform:
   m_GameObject: {fileID: 1446083895760290}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.15, y: 0.15, z: 0.15}
   m_Children:
   - {fileID: 4080335028570306}
   - {fileID: 224498657005344070}
@@ -1125,8 +1125,6 @@ MonoBehaviour:
   Preloader: {fileID: 1993739834302894}
   AlwaysFacePlayer: 0
   DestroyDistance: 5
-  MainUIManager: {fileID: 114491280919484308, guid: cc3968da6bc71c74087ad236c13410b5,
-    type: 2}
 --- !u!114 &114114081051830012
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -29,13 +29,15 @@ namespace HoloMu.Persistance
 
         private PhotoCapture _photoCapture = null;
         private string _filePath = "";
+        private int _instanceID;
 
         /// <summary>
         /// Takes a picture of current view. Overwrite PhotoTaken event in order to get image as byte array.
         /// ATTENTION: If you use unity to run directly, this will take a picture using your webcam.
         /// </summary>
-        public void TakePicture()
+        public void TakePicture(int instanceID)
         {
+            _instanceID = instanceID;
             VuforiaBehaviour.Instance.enabled = false;
             // GameObject.Find("ARCamera").SetActive(false);
             PhotoCapture.CreateAsync(false, OnPhotoCaptureCreated);
@@ -103,7 +105,7 @@ namespace HoloMu.Persistance
 
             if (this.PhotoTaken != null)
             {
-                this.PhotoTaken.Invoke(this, imgAsBytes);
+                this.PhotoTaken.Invoke(this, _instanceID, imgAsBytes);
             }
         }
 
