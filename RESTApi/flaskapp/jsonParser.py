@@ -19,3 +19,13 @@ class JsonParser():
             if exhibit["id"] == int(id):
                 return str(exhibit)
         return ""
+
+    def get_value_by_key(self, id, key):
+        if self.data is None:
+            return ""
+        for exhibit in self.data["exhibits"]:
+            if exhibit["id"] == int(id):
+                if key in exhibit:
+                    return exhibit[key]
+        return ""
+            
