@@ -22,6 +22,7 @@ namespace HoloMu.Networking
                 case RequestType.recognize:
                     StartCoroutine(Upload(request));
                     break;
+                case RequestType.setup:
                 case RequestType.recommend:
                     StartCoroutine(Get(request));
                     break;
