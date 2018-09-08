@@ -39,7 +39,6 @@ namespace HoloMu.Persistance
         {
             _instanceID = instanceID;
             VuforiaBehaviour.Instance.enabled = false;
-            // GameObject.Find("ARCamera").SetActive(false);
             PhotoCapture.CreateAsync(false, OnPhotoCaptureCreated);
         }
 
@@ -63,7 +62,6 @@ namespace HoloMu.Persistance
             }
             catch(Exception e)
             {
-                // Console.Write(e.Message);
                 Debug.Log(e.Message);
             }
         }
@@ -112,8 +110,6 @@ namespace HoloMu.Persistance
         private void OnStoppedPhotoMode(PhotoCapture.PhotoCaptureResult result)
         {
             VuforiaBehaviour.Instance.enabled = true;
-            // GameObject.Find("ARCamera").SetActive(true);
-
             _photoCapture.Dispose();
             _photoCapture = null;
             //if (!this.KeepImage)

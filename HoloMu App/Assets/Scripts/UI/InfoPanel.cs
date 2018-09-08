@@ -46,17 +46,6 @@ namespace HoloMu.UI
         {
             if (this.InfoPanelDestroy != null)
                 this.InfoPanelDestroy.Invoke(gameObject);
-
-            // Display Hologram again
-            //TestScript holo = GetComponentInParent<TestScript>();
-            //if (holo != null)
-            //{
-            //    holo.SetEnabled(true);
-            //}
-            //else
-            //{
-            //    Debug.LogWarning("Could not find Holo in Parent");
-            //}
         }
 
         private void Update()
@@ -158,13 +147,9 @@ namespace HoloMu.UI
             string value = "";
             bool success = GetButtonText(btn.GetComponentInChildren<Text>().text, out value);
             if (success)
-            {
                 MainText.text = value;
-            } 
             else
-            {
                 MainText.text = _exhibit.description;
-            }
         }
 
         private bool GetButtonText(string key, out string value)
@@ -176,9 +161,7 @@ namespace HoloMu.UI
                 if (info.name.Equals(key))
                 {
                     if (info.datatype == "text")
-                    {
                         value = info.text;
-                    }
                     else
                     {
                         foreach(string point in info.data)
