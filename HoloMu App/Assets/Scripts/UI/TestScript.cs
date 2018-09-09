@@ -2,6 +2,7 @@
 using HoloMu.Persistance;
 using HoloToolkit.Unity.InputModule;
 using UnityEngine;
+using Vuforia;
 
 namespace HoloMu.UI
 {
@@ -74,6 +75,10 @@ namespace HoloMu.UI
             _isClickable = isEnabled;
             _rotator.Enabled = isEnabled;
             GetComponent<MeshRenderer>().enabled = isEnabled;
+            if (isEnabled)
+                TrackerManager.Instance.GetTracker<ObjectTracker>().Start();
+            else
+                TrackerManager.Instance.GetTracker<ObjectTracker>().Stop();
         }
     }
 }

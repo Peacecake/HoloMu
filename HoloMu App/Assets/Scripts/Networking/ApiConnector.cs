@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using HoloMu.Persistance;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -13,6 +14,13 @@ namespace HoloMu.Networking
         public string BaseUrl;
 
         private UnityWebRequest _www;
+        private GameSettings _settings;
+
+        private void Start()
+        {
+            _settings = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().Settings;
+            this.BaseUrl = _settings.baseUrl;
+        }
 
         public void MakeRequest(ApiRequest request)
         {

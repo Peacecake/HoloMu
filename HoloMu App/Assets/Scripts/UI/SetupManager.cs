@@ -1,5 +1,6 @@
 ﻿using HoloMu;
 using HoloMu.Networking;
+using HoloMu.Persistance;
 using HoloToolkit.UI.Keyboard;
 using System;
 using System.Collections;
@@ -12,26 +13,29 @@ public class SetupManager : MonoBehaviour
 
     public Keyboard Keyboard = null;
     public TextMesh IPText = null;
-    public GameObject Loader = null;
+    public Loader Loader = null;
     public ApiConnector Api = null;
     public GameObject ARCamera = null;
+    public GameController Controller = null;
 
     private TouchScreenKeyboard _keyboard;
+    private GameSettings _settings;
 
     public void OnChangeIPClick()
     {
-        _keyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default, false, false, false, false);
+        _keyboard = TouchScreenKeyboard.Open(_settings.baseUrl, TouchScreenKeyboardType.Default, false, false, false, false);
     }
 
     public void OnStartSetupClick()
     {
         if (Loader != null)
-            Loader.SetActive(true);
+            Loader.SetLoading(true);
 
         if (Api != null)
         {
+            Controller.UpdateSettings(_settings);
             ApiRequest request = new ApiRequest(RequestType.setup);
-            Api.BaseUrl = IPText.text;
+            Api.BaseUrl = _settings.baseUrl;
             Api.MakeRequest(request);
         }
     }
@@ -39,23 +43,21 @@ public class SetupManager : MonoBehaviour
     private void Start()
     {
         if (Loader != null)
-            Loader.SetActive(false);
+            Loader.SetLoading(false);
         if (Api != null)
         {
             Api.ResponseRetrieved += OnApiResultRetrieved;
             Api.ErrorOccurred += OnApiError;
         }
-        if (IPText != null)
-        {
-            IPText.text = "http://192.168.0.52:5000";
-        }
         if (ARCamera != null)
             ARCamera.SetActive(false);
+        if (Controller != null)
+            _settings = Controller.Settings;
     }
 
     private void OnApiError(object sender, Error error)
     {
-        Debug.LogError(error.Message);
+        Loader.SetLoading(false, error.Message);
     }
 
     private void OnApiResultRetrieved(object sender, ApiRequest request)
@@ -73,9 +75,11 @@ public class SetupManager : MonoBehaviour
         {
             if (_keyboard.status.Equals(TouchScreenKeyboard.Status.Done))
             {
+                _settings.baseUrl = _keyboard.text;
                 _keyboard = null;
-                IPText.text = _keyboard.text;
             }
         }
+
+        IPText.text = _settings.baseUrl;
     }
 }
