@@ -73,10 +73,18 @@ public class SetupManager : MonoBehaviour
     {
         if (TouchScreenKeyboard.visible == false && _keyboard != null)
         {
-            if (_keyboard.status.Equals(TouchScreenKeyboard.Status.Done))
+            if (_settings == null)
+                _settings = this.Controller.Settings;
+            switch (_keyboard.status)
             {
-                _settings.baseUrl = _keyboard.text;
-                _keyboard = null;
+                case TouchScreenKeyboard.Status.Done:
+                    if (!_keyboard.text.Equals("")) 
+                        _settings.baseUrl = _keyboard.text;
+                    _keyboard = null;
+                    break;
+                case TouchScreenKeyboard.Status.Canceled:
+                    _keyboard = null;
+                    break;
             }
         }
 
