@@ -18,6 +18,10 @@ def hello_world():
     print (result)
     return "Hello World!"
 
+@bp.route("/setup")
+def setup():
+    return "success"
+
 @bp.route("/recognize", methods=["POST"])
 def recognize_image():
     upl = Uploader(request.files, "file")
