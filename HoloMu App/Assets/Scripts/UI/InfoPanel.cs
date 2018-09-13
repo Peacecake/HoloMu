@@ -1,5 +1,4 @@
 ﻿using HoloMu.Networking;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,8 +25,8 @@ namespace HoloMu.UI
         public Text TitleText;
         public Text MainText;
         public GameObject ButtonContainer;
-        public GameObject Canvas;
         public GameObject Preloader;
+        public GameObject[] ActiveContentOnLoaded;
         public float DestroyDistance = 5f;
         
 
@@ -54,13 +53,9 @@ namespace HoloMu.UI
             if (currentDistance > DestroyDistance)
             {
                 if (_uiManager != null)
-                {
                     _uiManager.HandleExhibitClose(_exhibit);
-                }
                 else
-                {
                     Debug.LogWarning("Could Not Find UIManager");
-                }
                 Destroy(gameObject);
             }
         }
@@ -69,9 +64,7 @@ namespace HoloMu.UI
         {
             Transform player = GameObject.FindGameObjectWithTag("MainCamera").transform;
             if (player == null)
-            {
                 return 0;
-            }
             return Vector3.Distance(_initialPlayerPosition, player.position);
         }
 
@@ -91,10 +84,18 @@ namespace HoloMu.UI
             }
         }
 
+        public void Close()
+        {
+            Destroy(gameObject);
+        }
+
         public void SetLoadingState(bool isLoading)
         {
             Preloader.SetActive(isLoading);
-            Canvas.SetActive(!isLoading);
+            foreach(GameObject obj in this.ActiveContentOnLoaded)
+            {
+                obj.SetActive(!isLoading);
+            }
         }
 
         /// <summary>
@@ -105,15 +106,16 @@ namespace HoloMu.UI
         private void AddButtons(string buttonText, int index)
         {
             // Calculate button properties
-            float height = ButtonContainer.GetComponent<RectTransform>().rect.height;
-            float width = ButtonContainer.GetComponent<RectTransform>().rect.width / _exhibit.moreinfos.Length;
+            float maxHeight = ButtonContainer.GetComponent<RectTransform>().rect.height / 4;
+            float height = ButtonContainer.GetComponent<RectTransform>().rect.height / _exhibit.moreinfos.Length;
+            height = height > maxHeight ? maxHeight : height;
+            float width = ButtonContainer.GetComponent<RectTransform>().rect.width;
             Vector3 localScale = Vector3.one;
             Vector2 anchorPoints = Vector2.up;
-            Vector3 position = new Vector3(index * width, 0, 0);
+            Vector3 position = new Vector3(0, index * height, 0);
 
             Button btn = Instantiate(ShowInfoButtonPrefab);
             btn.transform.SetParent(ButtonContainer.transform, false);
-            // btn.transform.parent = ButtonContainer.transform;
 
             // Configure button
             btn.GetComponentInChildren<Text>().text = buttonText;

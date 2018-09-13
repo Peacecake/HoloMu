@@ -18,6 +18,13 @@ namespace HoloMu.Networking
                 resultText = resultText.Replace("'", "\"");
                 resultText = System.Text.RegularExpressions.Regex.Unescape(@resultText);
                 SerializeableExhibit e = JsonUtility.FromJson<SerializeableExhibit>(resultText);
+                MoreInfo[] newValues = new MoreInfo[e.moreinfos.Length + 1];
+                MoreInfo desc = new MoreInfo();
+                desc.name = "Allgemein";
+                desc.datatype = "text";
+                desc.text = e.description;
+                newValues[0] = desc;
+                Array.Copy(e.moreinfos, 0, newValues, 1, e.moreinfos.Length);
                 this.SExhibit = e;
                 // this.Exhibit = parser.ParseExhibit(resultText);
             }
