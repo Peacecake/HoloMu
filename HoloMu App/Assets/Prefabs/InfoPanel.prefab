@@ -144,6 +144,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4916883164205114}
   - component: {fileID: 114045955125638954}
+  - component: {fileID: 65937931078934690}
+  - component: {fileID: 114526306526608686}
+  - component: {fileID: 114216492560524526}
   m_Layer: 0
   m_Name: InfoPanel
   m_TagString: Untagged
@@ -1105,6 +1108,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!65 &65937931078934690
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1446083895760290}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &114045955125638954
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1149,6 +1164,24 @@ MonoBehaviour:
   Revolutions: 3
   TestStop: 0
   HasAnimationFinished: 0
+--- !u!114 &114216492560524526
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1446083895760290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5aaad8ad290dd574892228bfdccd7829, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TagalongDistance: 2
+  EnforceDistance: 1
+  PositionUpdateSpeed: 9.8
+  SmoothMotion: 1
+  SmoothingFactor: 0.75
+  Target: {fileID: 0}
+  FlippedYAxis: 1
 --- !u!114 &114249910957534968
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1219,6 +1252,26 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &114526306526608686
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1446083895760290}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb69de839bd015f4099b5bd2c45e53e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseUnscaledTime: 1
+  PositionPerSecond: 30
+  RotationDegreesPerSecond: 720
+  RotationSpeedScaler: 0
+  ScalePerSecond: 5
+  SmoothLerpToTarget: 0
+  SmoothPositionLerpRatio: 0.5
+  SmoothRotationLerpRatio: 0.5
+  SmoothScaleLerpRatio: 0.5
 --- !u!114 &114540962102338074
 MonoBehaviour:
   m_ObjectHideFlags: 1

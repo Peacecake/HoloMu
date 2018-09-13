@@ -28,7 +28,6 @@ namespace HoloMu.UI
         public GameObject ButtonContainer;
         public GameObject Canvas;
         public GameObject Preloader;
-        public bool AlwaysFacePlayer = true;
         public float DestroyDistance = 5f;
         
 
@@ -63,16 +62,6 @@ namespace HoloMu.UI
                     Debug.LogWarning("Could Not Find UIManager");
                 }
                 Destroy(gameObject);
-            }
-
-            if (this.AlwaysFacePlayer)
-            {
-                Debug.LogWarning("Always Face Player does not work yet!");
-                this.AlwaysFacePlayer = false;
-                return;
-                //Transform player = GameObject.FindGameObjectWithTag("MainCamera").transform;
-                //transform.LookAt(player);
-                //Vector3.RotateTowards(transform.position, player.position, 0.5f, Time.deltaTime);
             }
         }
 
