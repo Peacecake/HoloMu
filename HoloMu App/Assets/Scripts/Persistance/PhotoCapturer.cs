@@ -38,7 +38,7 @@ namespace HoloMu.Persistance
         public void TakePicture(int instanceID)
         {
             _instanceID = instanceID;
-            VuforiaBehaviour.Instance.enabled = false;
+            if (VuforiaBehaviour.Instance != null) VuforiaBehaviour.Instance.enabled = false;
             PhotoCapture.CreateAsync(false, OnPhotoCaptureCreated);
         }
 
@@ -109,7 +109,7 @@ namespace HoloMu.Persistance
 
         private void OnStoppedPhotoMode(PhotoCapture.PhotoCaptureResult result)
         {
-            VuforiaBehaviour.Instance.enabled = true;
+            if (VuforiaBehaviour.Instance != null) VuforiaBehaviour.Instance.enabled = true;
             _photoCapture.Dispose();
             _photoCapture = null;
             //if (!this.KeepImage)

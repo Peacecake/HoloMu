@@ -112,7 +112,7 @@ namespace HoloMu.UI
             float width = ButtonContainer.GetComponent<RectTransform>().rect.width;
             Vector3 localScale = Vector3.one;
             Vector2 anchorPoints = Vector2.up;
-            Vector3 position = new Vector3(0, index * height, 0);
+            Vector3 position = new Vector3(0, -index * height, 0);
 
             Button btn = Instantiate(ShowInfoButtonPrefab);
             btn.transform.SetParent(ButtonContainer.transform, false);

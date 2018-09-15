@@ -1,5 +1,7 @@
 ﻿using HoloMu.Persistance;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace HoloMu.Networking
@@ -18,13 +20,13 @@ namespace HoloMu.Networking
                 resultText = resultText.Replace("'", "\"");
                 resultText = System.Text.RegularExpressions.Regex.Unescape(@resultText);
                 SerializeableExhibit e = JsonUtility.FromJson<SerializeableExhibit>(resultText);
-                MoreInfo[] newValues = new MoreInfo[e.moreinfos.Length + 1];
+                List<MoreInfo> oldValues = e.moreinfos.ToList();
                 MoreInfo desc = new MoreInfo();
                 desc.name = "Allgemein";
                 desc.datatype = "text";
                 desc.text = e.description;
-                newValues[0] = desc;
-                Array.Copy(e.moreinfos, 0, newValues, 1, e.moreinfos.Length);
+                oldValues.Insert(0, desc);
+                e.moreinfos = oldValues.ToArray();
                 this.SExhibit = e;
                 // this.Exhibit = parser.ParseExhibit(resultText);
             }

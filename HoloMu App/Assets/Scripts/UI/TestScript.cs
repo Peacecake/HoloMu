@@ -76,9 +76,9 @@ namespace HoloMu.UI
             _rotator.Enabled = isEnabled;
             GetComponent<MeshRenderer>().enabled = isEnabled;
             if (isEnabled)
-                TrackerManager.Instance.GetTracker<ObjectTracker>().Start();
+                TrackerManager.Instance.GetTracker<ObjectTracker>()?.Start();
             else
-                TrackerManager.Instance.GetTracker<ObjectTracker>().Stop();
+                TrackerManager.Instance.GetTracker<ObjectTracker>()?.Stop();
         }
     }
 }
