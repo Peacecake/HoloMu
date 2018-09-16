@@ -149,4 +149,6 @@ if __name__ == "__main__":
     else:
       nearestValue= find_nearest(results, value)
       if results[i] == nearestValue:
-        print ("\nNicht eindeutig erkannt!\nBester Treffer: " + str(labels[i]))
+        #print ("\nNicht eindeutig erkannt!\nBester Treffer: ")
+        # if recognition is not better than 60% this is the next and best alternative solution
+        print (labels[i])
