@@ -12,6 +12,8 @@ namespace HoloMu.UI
         public GameObject InfoPanel;
         public Transform FaceingTarget;
 
+        public event InfoPanelDestroyHandler InfoPanelDestroyed;
+
         private Dictionary<GameObject, GameObject> _infoPanels;
 
 	    private void Start ()
@@ -39,8 +41,10 @@ namespace HoloMu.UI
             GameObject exampleObj = _infoPanels.FirstOrDefault(x => x.Value.Equals(infoPanelObj)).Key;
             if (exampleObj != null)
             {
+                infoPanelObj.GetComponent<InfoPanel>().InfoPanelDestroy -= OnInfoPanelDestroy;
                 exampleObj.GetComponent<TestScript>().SetEnabled(true);
                 _infoPanels.Remove(exampleObj);
+                this.InfoPanelDestroyed?.Invoke(this);
             }
         }
 

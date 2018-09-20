@@ -11,11 +11,9 @@ using UnityEngine.SceneManagement;
 public class SetupManager : MonoBehaviour
 {
 
-    public Keyboard Keyboard = null;
     public TextMesh IPText = null;
     public Loader Loader = null;
-    public ApiConnector Api = null;
-    public GameObject ARCamera = null;
+    //public GameObject ARCamera = null;
     public GameController Controller = null;
 
     private TouchScreenKeyboard _keyboard;
@@ -30,29 +28,24 @@ public class SetupManager : MonoBehaviour
     {
         if (Loader != null)
             Loader.SetLoading(true);
-
-        if (Api != null)
-        {
-            Controller.UpdateSettings(_settings);
-            ApiRequest request = new ApiRequest(RequestType.setup);
-            Api.BaseUrl = _settings.baseUrl;
-            Api.MakeRequest(request);
-        }
+        
+        Controller.UpdateSettings(_settings);
+        ApiRequest request = new ApiRequest(RequestType.setup);
+        Controller.Api.BaseUrl = _settings.baseUrl;
+        Controller.Api.MakeRequest(request);
     }
 
     private void Start()
     {
         if (Loader != null)
             Loader.SetLoading(false);
-        if (Api != null)
-        {
-            Api.ResponseRetrieved += OnApiResultRetrieved;
-            Api.ErrorOccurred += OnApiError;
-        }
-        if (ARCamera != null)
-            ARCamera.SetActive(false);
+        //if (ARCamera != null)
+        //    ARCamera.SetActive(false);
         if (Controller != null)
             _settings = Controller.Settings;
+
+        // Controller.Api.ResponseRetrieved += OnApiResultRetrieved;
+        Controller.Api.ErrorOccurred += OnApiError;
     }
 
     private void OnApiError(object sender, Error error)
@@ -64,8 +57,9 @@ public class SetupManager : MonoBehaviour
     {
         if (request.Result.IsSuccessful)
         {
-            ARCamera.SetActive(true);
-            SceneManager.LoadScene("MainScene");
+            // ARCamera.SetActive(true);
+            // SceneManager.LoadScene("MainScene");
+            // Destroy(gameObject);
         }
     }
 

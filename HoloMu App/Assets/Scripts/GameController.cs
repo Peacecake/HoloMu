@@ -1,36 +1,119 @@
-﻿using HoloMu.Persistance;
+﻿using HoloMu;
+using HoloMu.Networking;
+using HoloMu.Persistance;
+using HoloMu.UI;
+using System;
 using System.IO;
 using UnityEngine;
+using Vuforia;
 
+[RequireComponent(typeof(ApiConnector))]
+[RequireComponent(typeof(PhotoCapturer))]
+[RequireComponent(typeof(MainUIManager))]
 public class GameController : MonoBehaviour
 {
-    public GameSettings Settings { get; private set; }
+    public GameSettings Settings { get { return LoadSettings(); } }
+    public ApiConnector Api { get { return LoadApiConnector(); } }
+    public PhotoCapturer PhotoCapturer { get { return LoadPhotoCapturer(); } }
+    public MainUIManager Ui { get; private set; }
+
+    public GameObject SetupManager;
+    public InfoPanelManager InfoPanelManager;
 
     string _settingsPath;
+    ApiConnector _api;
+    PhotoCapturer _photo;
+    GameSettings _settings;
 
-    private void Awake()
+    void Start()
     {
-        DontDestroyOnLoad(this.gameObject);
+        VuforiaBehaviour.Instance.enabled = false;
+        this.InfoPanelManager.InfoPanelDestroyed += OnInfoPanelDestroyed; 
+        Ui = GetComponent<MainUIManager>();
     }
 
-    private void Start()
+    void OnInfoPanelDestroyed(object sender)
     {
-        LoadSettings();
+        this.Api.MakeRequest(new ApiRequest(RequestType.recommend));
     }
 
-    void LoadSettings()
+    ApiConnector LoadApiConnector()
     {
-        _settingsPath = Path.Combine(Application.persistentDataPath, "settings.json");
-        if (!File.Exists(_settingsPath))
+        if (_api == null)
         {
-            Settings = new GameSettings();
-            PersistSettings();
+            _api = GetComponent<ApiConnector>();
+            _api.BaseUrl = Settings.baseUrl;
+            _api.ResponseRetrieved += OnApiResponseRetrieved;
+            _api.ErrorOccurred += OnApiError;
         }
-        else
+        return _api;
+    }
+
+    void OnApiResponseRetrieved(object sender, ApiRequest request)
+    {
+        if (request.Result.IsSuccessful)
         {
-            string jsonString = File.ReadAllText(_settingsPath);
-            Settings = JsonUtility.FromJson<GameSettings>(jsonString);
+            switch (request.Type)
+            {
+                case RequestType.recommend:
+                    RecommenderResult result = request.Result as RecommenderResult;
+                    Ui.ShowMessage("Unsere Empfehlung", result.Recommendation);
+                    break;
+                case RequestType.recognize:
+                    break;
+                case RequestType.setup:
+                    VuforiaBehaviour.Instance.enabled = true;
+                    Destroy(this.SetupManager);
+                    break;
+            }
         }
+    }
+
+    PhotoCapturer LoadPhotoCapturer()
+    {
+        if (_photo == null)
+        {
+            _photo = GetComponent<PhotoCapturer>();
+            _photo.PhotoTaken += OnPhotoTaken;
+            _photo.ErrorOccured += OnPhotoError;
+        }
+        return _photo;
+    }
+
+    void OnPhotoTaken(object sender, int instanceId, byte[] file)
+    {
+        this.Api.MakeRequest(new ApiRequest(RequestType.recognize, file));
+    }
+
+    void OnPhotoError(object sender, Error error)
+    {
+        Debug.Log(error.Message);
+        Ui.ShowMessage("Kamera Fehler", error.Message);
+    }
+
+    void OnApiError(object sender, Error error)
+    {
+        Debug.LogError(error.Message);
+        Ui.ShowMessage("Netzwerk Fehler", error.Message);
+    }
+
+    GameSettings LoadSettings()
+    {
+        if (_settings == null)
+        {
+            _settingsPath = Path.Combine(Application.persistentDataPath, "settings.json");
+            if (!File.Exists(_settingsPath))
+            {
+                _settings = new GameSettings();
+                PersistSettings();
+            }
+            else
+            {
+                string jsonString = File.ReadAllText(_settingsPath);
+                _settings = JsonUtility.FromJson<GameSettings>(jsonString);
+            }
+        }
+        return _settings;
     }
 
     void PersistSettings()
@@ -41,7 +124,13 @@ public class GameController : MonoBehaviour
 
     public void UpdateSettings(GameSettings newSettings)
     {
-        Settings = newSettings;
+        _settings = newSettings;
         PersistSettings();
+    }
+
+    public void HandleExhibitClose(SerializeableExhibit exhibit)
+    {
+        ApiRequest recommendRequest = new ApiRequest(RequestType.recommend);
+        _api.MakeRequest(recommendRequest);
     }
 }

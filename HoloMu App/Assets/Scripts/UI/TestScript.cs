@@ -1,5 +1,4 @@
 ﻿using HoloMu.Networking;
-using HoloMu.Persistance;
 using HoloToolkit.Unity.InputModule;
 using UnityEngine;
 using Vuforia;
@@ -8,35 +7,29 @@ namespace HoloMu.UI
 {
     public class TestScript : MonoBehaviour, IInputClickHandler
     {
-        public ApiConnector ApiConnector;
-        public PhotoCapturer PhotoCapturer;
+        public GameController GameController;
         public InfoPanelManager InfoPanelManager;
 
         private SerializeableExhibit _exhibit;
         private Rotate _rotator;
-        private bool _isClickable;
 
         private void Start()
         {
-            _isClickable = true;
             _rotator = GetComponent<Rotate>();
-            if (ApiConnector != null && PhotoCapturer != null)
-            {
-                ApiConnector.ResponseRetrieved += OnApiResult;
-                PhotoCapturer.PhotoTaken += OnPhotoTaken;
-            }
-            else
-                Debug.LogError("ApiConnector or PhotoCapturer are not set");
+            if (GameController == null)
+                GameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+            GameController.Api.ResponseRetrieved += OnApiResult;
+            // GameController.PhotoCapturer.PhotoTaken += OnPhotoTaken;
         }
 
-        private void OnPhotoTaken(object sender, int instanceId, byte[] file)
-        {
-            if (instanceId == GetInstanceID())
-            {
-                Debug.LogWarning("On PhotoTaken: " + transform.parent.name + " InstanceId: " + gameObject.GetInstanceID());
-                ApiConnector.MakeRequest(new ApiRequest(RequestType.recognize, file));
-            }
-        }
+        //private void OnPhotoTaken(object sender, int instanceId, byte[] file)
+        //{
+        //    if (instanceId == GetInstanceID())
+        //    {
+        //        Debug.LogWarning("On PhotoTaken: " + transform.parent.name + " InstanceId: " + gameObject.GetInstanceID());
+        //        GameController.Api.MakeRequest(new ApiRequest(RequestType.recognize, file));
+        //    }
+        //}
 
         private void OnApiResult(object sender, ApiRequest request)
         {
@@ -58,27 +51,25 @@ namespace HoloMu.UI
 
         public void OnInputClicked(InputClickedEventData eventData)
         {
-            if (!_isClickable) return;
             Debug.LogWarning("Click on: " + transform.parent.name + " InstanceID: " + gameObject.GetInstanceID());
 
             SetEnabled(false);
             InfoPanelManager.Add(gameObject);
 
             if (_exhibit == null)
-                PhotoCapturer.TakePicture(GetInstanceID());
+                GameController.PhotoCapturer.TakePicture(GetInstanceID());
             else
                 this.InfoPanelManager.SetExhibit(gameObject, _exhibit);
         }
 
         public void SetEnabled(bool isEnabled)
         {
-            _isClickable = isEnabled;
             _rotator.Enabled = isEnabled;
             GetComponent<MeshRenderer>().enabled = isEnabled;
             if (isEnabled)
-                TrackerManager.Instance.GetTracker<ObjectTracker>()?.Start();
+                TrackerManager.Instance.GetTracker<ObjectTracker>().Start();
             else
-                TrackerManager.Instance.GetTracker<ObjectTracker>()?.Stop();
+                TrackerManager.Instance.GetTracker<ObjectTracker>().Stop();
         }
     }
 }

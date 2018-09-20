@@ -32,12 +32,12 @@ namespace HoloMu.UI
 
         private SerializeableExhibit _exhibit;
         private Vector3 _initialPlayerPosition;
-        private MainUIManager _uiManager;
+        private GameController _controller;
 
         private void Awake()
         {
             _initialPlayerPosition = GameObject.FindGameObjectWithTag("MainCamera").transform.position;
-            _uiManager = GameObject.Find("MainUI").GetComponent<MainUIManager>();
+            _controller = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         }
 
         private void OnDestroy()
@@ -52,10 +52,7 @@ namespace HoloMu.UI
             float currentDistance = GetPlayerDistanceFromInitialPosition();
             if (currentDistance > DestroyDistance)
             {
-                if (_uiManager != null)
-                    _uiManager.HandleExhibitClose(_exhibit);
-                else
-                    Debug.LogWarning("Could Not Find UIManager");
+                _controller.HandleExhibitClose(_exhibit);
                 Destroy(gameObject);
             }
         }

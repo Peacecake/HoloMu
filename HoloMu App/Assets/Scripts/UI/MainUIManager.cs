@@ -1,58 +1,36 @@
-﻿using HoloMu.Networking;
-using HoloMu.Persistance;
-using System;
-using System.Collections;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 namespace HoloMu.UI
 {
-    public class MainUIManager : MonoBehaviour {
+    public class MainUIManager : MonoBehaviour
+    {
+        public GameObject MessageBoxPrefab;
+        public List<string> ShowMessageBoxScenes = new List<string>();
 
-        public ApiConnector ApiConnector;
-        public PhotoCapturer PhotoCapturer;
+        private GameObject _msgBox;
 
-        public Text ErrorText;
-        public Text RecommenderText;
-        public float DisplayTextDuration = 4f;
-
-	    private void Start ()
+        public void ShowMessage(string header, string message)
         {
-            this.ApiConnector.ErrorOccurred += OnErrorOccured;
-            this.ApiConnector.ResponseRetrieved += OnApiResponseRetrieved;
-            this.PhotoCapturer.ErrorOccured += OnErrorOccured;
-            this.ErrorText.text = "";
-            this.RecommenderText.text = "";
-	    }
+            //if (MessageBoxAllowed() == false)
+            //    return;
 
-        private void OnApiResponseRetrieved(object sender, ApiRequest request)
-        {
-            if (request.Type.Equals(RequestType.recommend))
+            if (_msgBox == null)
             {
-                RecommenderResult result = request.Result as RecommenderResult;
-                if (result.IsSuccessful)
-                {
-                    StartCoroutine(ShowTextForSeconds(RecommenderText, result.Recommendation, DisplayTextDuration));
-                }
+                _msgBox = Instantiate(MessageBoxPrefab);
             }
+            _msgBox.GetComponent<MessageBox>().Show(header, message);
         }
 
-        private void OnErrorOccured(object sender, Error error)
+        bool MessageBoxAllowed()
         {
-            StartCoroutine(ShowTextForSeconds(ErrorText, error.Message, DisplayTextDuration));
-        }
-
-        private IEnumerator ShowTextForSeconds(Text textField, string text, float time)
-        {
-            textField.text = text;
-            yield return new WaitForSeconds(time);
-            textField.text = "";
-        }
-
-        public void HandleExhibitClose(SerializeableExhibit exhibit)
-        {
-            ApiRequest recommendRequest = new ApiRequest(RequestType.recommend);
-            ApiConnector.MakeRequest(recommendRequest);
+            foreach(string scenename in ShowMessageBoxScenes)
+            {
+                if (SceneManager.GetActiveScene().name.Equals(scenename))
+                    return true;
+            }
+            return false;
         }
     }
 }
