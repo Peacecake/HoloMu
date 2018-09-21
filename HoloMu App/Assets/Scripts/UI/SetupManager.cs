@@ -1,5 +1,6 @@
 ﻿using HoloMu;
 using HoloMu.Networking;
+using HoloMu.Persistance;
 using HoloToolkit.UI.Keyboard;
 using System;
 using System.Collections;
@@ -10,60 +11,55 @@ using UnityEngine.SceneManagement;
 public class SetupManager : MonoBehaviour
 {
 
-    public Keyboard Keyboard = null;
     public TextMesh IPText = null;
-    public GameObject Loader = null;
-    public ApiConnector Api = null;
-    public GameObject ARCamera = null;
+    public Loader Loader = null;
+    //public GameObject ARCamera = null;
+    public GameController Controller = null;
 
     private TouchScreenKeyboard _keyboard;
+    private GameSettings _settings;
 
     public void OnChangeIPClick()
     {
-        _keyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default, false, false, false, false);
+        _keyboard = TouchScreenKeyboard.Open(_settings.baseUrl, TouchScreenKeyboardType.Default, false, false, false, false);
     }
 
     public void OnStartSetupClick()
     {
         if (Loader != null)
-            Loader.SetActive(true);
-
-        if (Api != null)
-        {
-            ApiRequest request = new ApiRequest(RequestType.setup);
-            Api.BaseUrl = IPText.text;
-            Api.MakeRequest(request);
-        }
+            Loader.SetLoading(true);
+        
+        Controller.UpdateSettings(_settings);
+        ApiRequest request = new ApiRequest(RequestType.setup);
+        Controller.Api.BaseUrl = _settings.baseUrl;
+        Controller.Api.MakeRequest(request);
     }
 
     private void Start()
     {
         if (Loader != null)
-            Loader.SetActive(false);
-        if (Api != null)
-        {
-            Api.ResponseRetrieved += OnApiResultRetrieved;
-            Api.ErrorOccurred += OnApiError;
-        }
-        if (IPText != null)
-        {
-            IPText.text = "http://192.168.0.52:5000";
-        }
-        if (ARCamera != null)
-            ARCamera.SetActive(false);
+            Loader.SetLoading(false);
+        //if (ARCamera != null)
+        //    ARCamera.SetActive(false);
+        if (Controller != null)
+            _settings = Controller.Settings;
+
+        // Controller.Api.ResponseRetrieved += OnApiResultRetrieved;
+        Controller.Api.ErrorOccurred += OnApiError;
     }
 
     private void OnApiError(object sender, Error error)
     {
-        Debug.LogError(error.Message);
+        Loader.SetLoading(false, error.Message);
     }
 
     private void OnApiResultRetrieved(object sender, ApiRequest request)
     {
         if (request.Result.IsSuccessful)
         {
-            ARCamera.SetActive(true);
-            SceneManager.LoadScene("MainScene");
+            // ARCamera.SetActive(true);
+            // SceneManager.LoadScene("MainScene");
+            // Destroy(gameObject);
         }
     }
 
@@ -71,11 +67,21 @@ public class SetupManager : MonoBehaviour
     {
         if (TouchScreenKeyboard.visible == false && _keyboard != null)
         {
-            if (_keyboard.status.Equals(TouchScreenKeyboard.Status.Done))
+            if (_settings == null)
+                _settings = this.Controller.Settings;
+            switch (_keyboard.status)
             {
-                _keyboard = null;
-                IPText.text = _keyboard.text;
+                case TouchScreenKeyboard.Status.Done:
+                    if (!_keyboard.text.Equals("")) 
+                        _settings.baseUrl = _keyboard.text;
+                    _keyboard = null;
+                    break;
+                case TouchScreenKeyboard.Status.Canceled:
+                    _keyboard = null;
+                    break;
             }
         }
+
+        IPText.text = _settings.baseUrl;
     }
 }

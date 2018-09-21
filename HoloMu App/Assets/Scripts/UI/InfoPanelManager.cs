@@ -10,6 +10,9 @@ namespace HoloMu.UI
     public class InfoPanelManager : MonoBehaviour
     {
         public GameObject InfoPanel;
+        public Transform FaceingTarget;
+
+        public event InfoPanelDestroyHandler InfoPanelDestroyed;
 
         private Dictionary<GameObject, GameObject> _infoPanels;
 
@@ -18,13 +21,16 @@ namespace HoloMu.UI
             _infoPanels = new Dictionary<GameObject, GameObject>();
             if (this.InfoPanel == null)
                 Debug.LogError("Set Infopanel Prefab to InfopanelManager");
-	    }
+            if (this.FaceingTarget == null)
+                this.FaceingTarget = GameObject.Find("MixedRealityCameraParent").transform;
+        }
 
         public void Add(GameObject parent)
         {
             GameObject p = Instantiate(InfoPanel, parent.transform.position, Quaternion.identity);
             p.GetComponent<InfoPanel>().InfoPanelDestroy += OnInfoPanelDestroy;
             p.GetComponent<InfoPanel>().SetLoadingState(true);
+            p.GetComponent<FaceTarget>().Target = this.FaceingTarget;
             p.transform.SetParent(transform);
             _infoPanels.Add(parent, p);
         }
@@ -35,8 +41,10 @@ namespace HoloMu.UI
             GameObject exampleObj = _infoPanels.FirstOrDefault(x => x.Value.Equals(infoPanelObj)).Key;
             if (exampleObj != null)
             {
+                infoPanelObj.GetComponent<InfoPanel>().InfoPanelDestroy -= OnInfoPanelDestroy;
                 exampleObj.GetComponent<TestScript>().SetEnabled(true);
                 _infoPanels.Remove(exampleObj);
+                this.InfoPanelDestroyed?.Invoke(this);
             }
         }
 
