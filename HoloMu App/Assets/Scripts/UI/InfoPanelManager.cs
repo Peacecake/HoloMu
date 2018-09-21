@@ -42,7 +42,7 @@ namespace HoloMu.UI
             if (exampleObj != null)
             {
                 infoPanelObj.GetComponent<InfoPanel>().InfoPanelDestroy -= OnInfoPanelDestroy;
-                exampleObj.GetComponent<TestScript>().SetEnabled(true);
+                exampleObj.GetComponent<InfoIcon>().SetEnabled(true);
                 _infoPanels.Remove(exampleObj);
                 this.InfoPanelDestroyed?.Invoke(this);
             }
@@ -66,7 +66,7 @@ namespace HoloMu.UI
                 InfoPanel ip = kvp.Value.GetComponent<InfoPanel>();
                 if (ip.Exhibit.id == exhibitId)
                 {
-                    TestScript ts = kvp.Key.GetComponent<TestScript>();
+                    InfoIcon ts = kvp.Key.GetComponent<InfoIcon>();
                     ts.SetEnabled(true);
                     Destroy(kvp.Value);
                     _infoPanels.Remove(kvp.Key);
