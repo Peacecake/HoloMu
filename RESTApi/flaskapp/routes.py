@@ -36,13 +36,14 @@ def recognize_image():
     print "-----------"
     jp = JsonParser(os.path.join(os.getcwd(), "flaskapp", "data.JSON"))
     jp.parse()
+    objectId = 723
     exh = jp.get_item_by_id(objectId)
 
-    db = get_db()
-    db.execute("INSERT INTO data (e_id, e_category) VALUES (?, ?)", (objectId, jp.get_value_by_key(objectId, "category")));
-    db.commit()
-    res = db.execute("SELECT * from data;").fetchall()
-    print(res)
+    #db = get_db()
+    #db.execute("INSERT INTO data (e_id, e_category) VALUES (?, ?)", (objectId, jp.get_value_by_key(objectId, "category")));
+    #db.commit()
+    #res = db.execute("SELECT * from data;").fetchall()
+    #print(res)
 
     upl.delete_file()
     return exh
