@@ -7,6 +7,7 @@ namespace HoloMu.UI
     public class MainUIManager : MonoBehaviour
     {
         public GameObject MessageBoxPrefab;
+        public Transform MessageBoxTarget;
         public List<string> ShowMessageBoxScenes = new List<string>();
 
         private GameObject _msgBox;
@@ -21,6 +22,7 @@ namespace HoloMu.UI
                 _msgBox = Instantiate(MessageBoxPrefab);
             }
             _msgBox.GetComponent<MessageBox>().Show(header, message);
+            _msgBox.GetComponent<FaceTarget>().Target = this.MessageBoxTarget;
         }
 
         bool MessageBoxAllowed()
