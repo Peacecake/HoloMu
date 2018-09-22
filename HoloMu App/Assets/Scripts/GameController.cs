@@ -2,7 +2,6 @@
 using HoloMu.Networking;
 using HoloMu.Persistance;
 using HoloMu.UI;
-using System;
 using System.IO;
 using UnityEngine;
 using Vuforia;

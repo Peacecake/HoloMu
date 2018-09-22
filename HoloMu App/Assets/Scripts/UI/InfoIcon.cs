@@ -5,7 +5,7 @@ using Vuforia;
 
 namespace HoloMu.UI
 {
-    public class TestScript : MonoBehaviour, IInputClickHandler
+    public class InfoIcon : MonoBehaviour, IInputClickHandler
     {
         public GameController GameController;
         public InfoPanelManager InfoPanelManager;
@@ -65,7 +65,8 @@ namespace HoloMu.UI
         public void SetEnabled(bool isEnabled)
         {
             _rotator.Enabled = isEnabled;
-            GetComponent<MeshRenderer>().enabled = isEnabled;
+            gameObject.SetActive(isEnabled);
+            // GetComponent<MeshRenderer>().enabled = isEnabled;
             if (isEnabled)
                 TrackerManager.Instance.GetTracker<ObjectTracker>().Start();
             else
