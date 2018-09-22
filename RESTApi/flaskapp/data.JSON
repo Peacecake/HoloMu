@@ -12,7 +12,7 @@
                     "name": "Hardware",
                     "datatype": "array",
                     "data": [
-                        "Zwei einseitige 5 1/4 Diskettenlaufwerke mit 40 Tracks",
+                        "Zwei einseitige 5.25 Diskettenlaufwerke mit 40 Tracks",
                         "Zilog-Z80-CPU mit 4 MHz",
                         "64 Kilobyte RAM",
                         "69 Tasten-Keyboard",
@@ -22,7 +22,7 @@
                 {
                     "name": "Trivia",
                     "datatype": "text",
-                    "text": "Der Osborne 1 bzw. sein Nachfolger, der Osborne Executive, ist kurz in dem Film 'Das Philadelphia Experiment' (1984) zu sehen. In derselben Szene sieht man auch einen Commodore 64."
+                    "text": "Der Osborne 1 bzw. sein Nachfolger, der Osborne Executive, ist kurz in dem Film Das Philadelphia Experiment (1984) zu sehen. In derselben Szene sieht man auch einen Commodore 64."
                 }
             ]
         },
@@ -77,7 +77,7 @@
             "category": "Personal Computer",
             "year": "1998 - 2003",
             "manufacturer": "Apple",
-            "description": "Der Apple iMac ist ein von Apple produzierter Computer. Grundsätzliche Idde des iMacs war ein sogenanntes 'All-in-one'-Gehäuse mit möglichst einfacher Bedienbarkeit für eine technisch weniger versierte Zielgruppe. Mit diesem Gerät knüpfte Apple an frühere, in den 80er Jahren produzierte Rechner an, in denen Rechner und Minibildschirm in einem Gerät integriert waren.",
+            "description": "Der Apple iMac ist ein von Apple produzierter Computer. Grundsätzliche Idde des iMacs war ein sogenanntes All-in-one-Gehäuse mit möglichst einfacher Bedienbarkeit für eine technisch weniger versierte Zielgruppe. Mit diesem Gerät knüpfte Apple an frühere, in den 80er Jahren produzierte Rechner an, in denen Rechner und Minibildschirm in einem Gerät integriert waren.",
             "moreinfos":[
                 {
                     "name": "Hardware",
@@ -93,7 +93,7 @@
                 {
                     "name": "Trivia",
                     "datatype":"text",
-                    "text": "Das \"i\" im iMac hat, laut Keynote von 1998, folgende Bedeutungen: internet, individual, instruct, inform und inspire."
+                    "text": "Das i im iMac hat, laut Keynote von 1998, folgende Bedeutungen: internet, individual, instruct, inform und inspire."
                 }
             ]
         },
