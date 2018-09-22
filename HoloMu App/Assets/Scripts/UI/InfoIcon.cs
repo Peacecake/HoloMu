@@ -56,10 +56,10 @@ namespace HoloMu.UI
             SetEnabled(false);
             InfoPanelManager.Add(gameObject);
 
-            if (_exhibit == null)
+            //if (_exhibit == null)
                 GameController.PhotoCapturer.TakePicture(GetInstanceID());
-            else
-                this.InfoPanelManager.SetExhibit(gameObject, _exhibit);
+            //else
+            //    this.InfoPanelManager.SetExhibit(gameObject, _exhibit);
         }
 
         public void SetEnabled(bool isEnabled)
