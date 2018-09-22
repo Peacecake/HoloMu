@@ -38,7 +38,7 @@ def recognize_image():
     print "-----------"
     jp = JsonParser(os.path.join(os.getcwd(), "flaskapp", "data.JSON"))
     jp.parse()
-    objectId = 723
+    # objectId = 723
     exh = jp.get_item_by_id(objectId)
 
     #db = get_db()
