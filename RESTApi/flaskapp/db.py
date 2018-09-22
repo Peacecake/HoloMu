@@ -2,7 +2,9 @@ import sqlite3
 import click
 from flask import current_app, g
 from flask.cli import with_appcontext
-
+from . import JsonParser
+import os
+import json
 
 def get_db():
     if "db" not in g:
@@ -26,6 +28,21 @@ def init_db():
     db = get_db()
     with current_app.open_resource("schema.sql") as f:
         db.executescript(f.read().decode("utf8"))
+
+    init_row_data = []
+    jp = JsonParser(os.path.join(os.getcwd(), "flaskapp", "data.JSON"))
+    jp.parse()
+    for exhibit in jp.data["exhibits"]:
+        init_row_data.append({
+            "e_name": exhibit["name"],
+            "e_prop": 1.0 / len(jp.data["exhibits"])
+        })
+
+    db.execute("INSERT INTO recommend (data) VALUES (?)", (json.dumps(init_row_data),))
+    db.commit()
+
+
+    
 
 
 @click.command("init-db")
