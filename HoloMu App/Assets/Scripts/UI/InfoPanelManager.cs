@@ -34,7 +34,7 @@ namespace HoloMu.UI
             _icons.Add(DEFAULT_KEY, icon);
         }
 
-        private void OnInfoPanelDestroy(object sender)
+        private void OnInfoPanelDestroy(object sender, SerializeableExhibit exhibit)
         {
             GameObject infoPanelObj = sender as GameObject;
             InfoPanel ip = infoPanelObj.GetComponent<InfoPanel>();
@@ -45,7 +45,7 @@ namespace HoloMu.UI
                 icon.SetEnabled(true);
                 _icons.Remove(ip.Exhibit.id);
                 _panels.Remove(ip.Exhibit.id);
-                this.InfoPanelDestroyed?.Invoke(this);
+                this.InfoPanelDestroyed?.Invoke(this, exhibit);
             }
         }
 

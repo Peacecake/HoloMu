@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -9,11 +10,13 @@ namespace HoloMu.Networking
     {
         public RequestType Type { get; private set; }
         public byte[] File { get; set; }
+        public int ExhibitId { get; set; }
         public string URL
         {
             get
             {
-                return _baseUrl + "/" + this.Type.ToString();
+                if (ExhibitId != 0) return $"{_baseUrl}/{this.Type.ToString()}/{ExhibitId.ToString()}";
+                return $"{_baseUrl}/{this.Type.ToString()}";
             }
             set
             {

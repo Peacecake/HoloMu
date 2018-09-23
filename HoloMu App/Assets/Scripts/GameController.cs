@@ -39,9 +39,13 @@ public class GameController : MonoBehaviour
         this.PhotoCapturer.TakePicture(0);
     }
 
-    void OnInfoPanelDestroyed(object sender)
+    void OnInfoPanelDestroyed(object sender, SerializeableExhibit exhibit)
     {
-        this.Api.MakeRequest(new ApiRequest(RequestType.recommend));
+        ApiRequest request = new ApiRequest(RequestType.recommend)
+        {
+            ExhibitId = exhibit.id
+        };
+        this.Api.MakeRequest(request);
     }
 
     ApiConnector LoadApiConnector()

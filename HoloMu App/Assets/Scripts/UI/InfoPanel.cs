@@ -39,7 +39,7 @@ namespace HoloMu.UI
 
         private void OnDestroy()
         {
-            if (this.InfoPanelDestroy != null) this.InfoPanelDestroy.Invoke(gameObject);
+            this.InfoPanelDestroy?.Invoke(gameObject, _exhibit);
         }
 
         private void Update()
