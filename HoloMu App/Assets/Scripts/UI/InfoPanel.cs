@@ -28,40 +28,31 @@ namespace HoloMu.UI
         public GameObject Preloader;
         public GameObject[] ActiveContentOnLoaded;
         public float DestroyDistance = 5f;
-        
 
         private SerializeableExhibit _exhibit;
         private Vector3 _initialPlayerPosition;
-        private GameController _controller;
 
         private void Awake()
         {
             _initialPlayerPosition = GameObject.FindGameObjectWithTag("MainCamera").transform.position;
-            _controller = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         }
 
         private void OnDestroy()
         {
-            if (this.InfoPanelDestroy != null)
-                this.InfoPanelDestroy.Invoke(gameObject);
+            if (this.InfoPanelDestroy != null) this.InfoPanelDestroy.Invoke(gameObject);
         }
 
         private void Update()
         {
             // Check if player has wolked away from info panel
             float currentDistance = GetPlayerDistanceFromInitialPosition();
-            if (currentDistance > DestroyDistance)
-            {
-                _controller.HandleExhibitClose(_exhibit);
-                Destroy(gameObject);
-            }
+            if (currentDistance > DestroyDistance) Destroy(gameObject);
         }
 
         private float GetPlayerDistanceFromInitialPosition()
         {
             Transform player = GameObject.FindGameObjectWithTag("MainCamera").transform;
-            if (player == null)
-                return 0;
+            if (player == null) return 0;
             return Vector3.Distance(_initialPlayerPosition, player.position);
         }
 
@@ -134,10 +125,8 @@ namespace HoloMu.UI
         {
             string value = "";
             bool success = GetButtonText(btn.GetComponentInChildren<Text>().text, out value);
-            if (success)
-                MainText.text = value;
-            else
-                MainText.text = _exhibit.description;
+            if (success) MainText.text = value;
+            else MainText.text = _exhibit.description;
         }
 
         private bool GetButtonText(string key, out string value)
@@ -148,8 +137,7 @@ namespace HoloMu.UI
             {
                 if (info.name.Equals(key))
                 {
-                    if (info.datatype == "text")
-                        value = info.text;
+                    if (info.datatype == "text") value = info.text;
                     else
                     {
                         foreach(string point in info.data)
@@ -157,7 +145,6 @@ namespace HoloMu.UI
                             value += "- " + point + "\n";
                         }
                     }
-
                     return true;
                 }
             }

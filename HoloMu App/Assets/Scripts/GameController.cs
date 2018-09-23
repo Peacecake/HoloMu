@@ -51,7 +51,7 @@ public class GameController : MonoBehaviour
             _api = GetComponent<ApiConnector>();
             _api.BaseUrl = Settings.baseUrl;
             _api.ResponseRetrieved += OnApiResponseRetrieved;
-            _api.ErrorOccurred += OnApiError;
+            // _api.ErrorOccurred += OnApiError;
         }
         return _api;
     }
@@ -73,16 +73,26 @@ public class GameController : MonoBehaviour
                 case RequestType.setup:
                     VuforiaBehaviour.Instance.enabled = true;
                     Destroy(this.SetupManager);
+                    this.Ui.ShowMessage("Setup erfolgreich", "HoloMu ist jetzt eingerichtet. Klicken Sie auf die Hologramme um Informationen über die dazugehörigen Exponate zu erhalten.");
                     break;
             }
         }
         else
         {
-            switch (request.Type)
+            if (request.Type.Equals(RequestType.setup))
             {
-                case RequestType.recognize:
-                    this.InfoPanelManager.Remove();
-                    break;
+                this.SetupManager.GetComponent<SetupManager>().HandleSetupError(request.Result.ErrorMessage);
+            }
+            else
+            {
+                Debug.LogError(request.Result.ErrorMessage);
+                Ui.ShowMessage("Netzwerk Fehler", request.Result.ErrorMessage);
+                switch (request.Type)
+                {
+                    case RequestType.recognize:
+                        this.InfoPanelManager.Remove();
+                        break;
+                }
             }
         }
     }
@@ -109,11 +119,11 @@ public class GameController : MonoBehaviour
         Ui.ShowMessage("Kamera Fehler", error.Message);
     }
 
-    void OnApiError(object sender, Error error)
-    {
-        Debug.LogError(error.Message);
-        Ui.ShowMessage("Netzwerk Fehler", error.Message);
-    }
+    //void OnApiError(object sender, Error error)
+    //{
+    //    Debug.LogError(error.Message);
+    //    Ui.ShowMessage("Netzwerk Fehler", error.Message);
+    //}
 
     GameSettings LoadSettings()
     {
@@ -144,11 +154,5 @@ public class GameController : MonoBehaviour
     {
         _settings = newSettings;
         PersistSettings();
-    }
-
-    public void HandleExhibitClose(SerializeableExhibit exhibit)
-    {
-        ApiRequest recommendRequest = new ApiRequest(RequestType.recommend);
-        _api.MakeRequest(recommendRequest);
     }
 }

@@ -20,8 +20,7 @@ namespace HoloMu.UI
         {
             _panels = new Dictionary<int, GameObject>();
             _icons = new Dictionary<int, InfoIcon>();
-            if (this.InfoPanel == null)
-                Debug.LogError("Set Infopanel Prefab to InfopanelManager");
+            if (this.InfoPanel == null) Debug.LogError("Set Infopanel Prefab to InfopanelManager");
         }
 
         public void Add(InfoIcon icon)
