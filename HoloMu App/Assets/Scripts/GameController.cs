@@ -31,6 +31,14 @@ public class GameController : MonoBehaviour
         Ui = GetComponent<MainUIManager>();
     }
 
+    public void OnInfoIconClick(GameObject clickedObject)
+    {
+        InfoIcon icon = clickedObject.GetComponent<InfoIcon>();
+        icon.SetEnabled(false);
+        this.InfoPanelManager.Add(icon);
+        this.PhotoCapturer.TakePicture(0);
+    }
+
     void OnInfoPanelDestroyed(object sender)
     {
         this.Api.MakeRequest(new ApiRequest(RequestType.recommend));
@@ -55,14 +63,25 @@ public class GameController : MonoBehaviour
             switch (request.Type)
             {
                 case RequestType.recommend:
-                    RecommenderResult result = request.Result as RecommenderResult;
-                    Ui.ShowMessage("Unsere Empfehlung", result.Recommendation);
+                    RecommenderResult recResult = request.Result as RecommenderResult;
+                    Ui.ShowMessage("Unsere Empfehlung", recResult.Recommendation);
                     break;
                 case RequestType.recognize:
+                    ImageRecognitionResult irResult = request.Result as ImageRecognitionResult;
+                    this.InfoPanelManager.SetExhibit(irResult.SExhibit);
                     break;
                 case RequestType.setup:
                     VuforiaBehaviour.Instance.enabled = true;
                     Destroy(this.SetupManager);
+                    break;
+            }
+        }
+        else
+        {
+            switch (request.Type)
+            {
+                case RequestType.recognize:
+                    this.InfoPanelManager.Remove();
                     break;
             }
         }
