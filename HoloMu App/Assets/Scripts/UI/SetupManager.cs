@@ -7,13 +7,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class SetupManager : MonoBehaviour
 {
-
+    public Button SetupButton;
+    public Button ChangeIPButton;
     public TextMesh IPText = null;
     public Loader Loader = null;
-    //public GameObject ARCamera = null;
     public GameController Controller = null;
 
     private TouchScreenKeyboard _keyboard;
@@ -26,8 +27,9 @@ public class SetupManager : MonoBehaviour
 
     public void OnStartSetupClick()
     {
-        if (Loader != null)
-            Loader.SetLoading(true);
+        this.SetupButton.interactable = false;
+        this.ChangeIPButton.interactable = false;
+        Loader.SetLoading(true);
         
         Controller.UpdateSettings(_settings);
         ApiRequest request = new ApiRequest(RequestType.setup);
@@ -37,31 +39,25 @@ public class SetupManager : MonoBehaviour
 
     private void Start()
     {
-        if (Loader != null)
-            Loader.SetLoading(false);
-        //if (ARCamera != null)
-        //    ARCamera.SetActive(false);
-        if (Controller != null)
-            _settings = Controller.Settings;
+        Loader.SetLoading(false);
+        _settings = Controller.Settings;
 
-        // Controller.Api.ResponseRetrieved += OnApiResultRetrieved;
-        Controller.Api.ErrorOccurred += OnApiError;
+        // Controller.Api.ErrorOccurred += OnApiError;
     }
 
-    private void OnApiError(object sender, Error error)
+    public void HandleSetupError(string errorMessage)
     {
-        Loader.SetLoading(false, error.Message);
+        this.SetupButton.interactable = true;
+        this.ChangeIPButton.interactable = true;
+        Loader.SetLoading(false, errorMessage);
     }
 
-    private void OnApiResultRetrieved(object sender, ApiRequest request)
-    {
-        if (request.Result.IsSuccessful)
-        {
-            // ARCamera.SetActive(true);
-            // SceneManager.LoadScene("MainScene");
-            // Destroy(gameObject);
-        }
-    }
+    //private void OnApiError(object sender, Error error)
+    //{
+    //    this.SetupButton.interactable = true;
+    //    this.ChangeIPButton.interactable = true;
+    //    Loader.SetLoading(false, error.Message);
+    //}
 
     private void Update()
     {

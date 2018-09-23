@@ -1,8 +1,5 @@
 ﻿using HoloMu.Networking;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace HoloMu.UI
@@ -14,72 +11,66 @@ namespace HoloMu.UI
 
         public event InfoPanelDestroyHandler InfoPanelDestroyed;
 
-        private Dictionary<GameObject, GameObject> _infoPanels;
+        private Dictionary<int, GameObject> _panels;
+        private Dictionary<int, InfoIcon> _icons;
+
+        private const int DEFAULT_KEY = -1;
 
 	    private void Start ()
         {
-            _infoPanels = new Dictionary<GameObject, GameObject>();
-            if (this.InfoPanel == null)
-                Debug.LogError("Set Infopanel Prefab to InfopanelManager");
-            if (this.FaceingTarget == null)
-                this.FaceingTarget = GameObject.Find("MixedRealityCameraParent").transform;
+            _panels = new Dictionary<int, GameObject>();
+            _icons = new Dictionary<int, InfoIcon>();
+            if (this.InfoPanel == null) Debug.LogError("Set Infopanel Prefab to InfopanelManager");
         }
 
-        public void Add(GameObject parent)
+        public void Add(InfoIcon icon)
         {
-            GameObject p = Instantiate(InfoPanel, parent.transform.position, Quaternion.identity);
+            GameObject p = Instantiate(this.InfoPanel, icon.transform.position, Quaternion.identity);
             p.GetComponent<InfoPanel>().InfoPanelDestroy += OnInfoPanelDestroy;
             p.GetComponent<InfoPanel>().SetLoadingState(true);
             p.GetComponent<FaceTarget>().Target = this.FaceingTarget;
             p.transform.SetParent(transform);
-            _infoPanels.Add(parent, p);
+            _panels.Add(DEFAULT_KEY, p);
+            _icons.Add(DEFAULT_KEY, icon);
         }
 
-        private void OnInfoPanelDestroy(object sender)
+        private void OnInfoPanelDestroy(object sender, SerializeableExhibit exhibit)
         {
             GameObject infoPanelObj = sender as GameObject;
-            GameObject exampleObj = _infoPanels.FirstOrDefault(x => x.Value.Equals(infoPanelObj)).Key;
-            if (exampleObj != null)
+            InfoPanel ip = infoPanelObj.GetComponent<InfoPanel>();
+            InfoIcon icon;
+            if (_panels.TryGetValue(ip.Exhibit.id, out infoPanelObj) && _icons.TryGetValue(ip.Exhibit.id, out icon))
             {
-                infoPanelObj.GetComponent<InfoPanel>().InfoPanelDestroy -= OnInfoPanelDestroy;
-                exampleObj.GetComponent<InfoIcon>().SetEnabled(true);
-                _infoPanels.Remove(exampleObj);
-                this.InfoPanelDestroyed?.Invoke(this);
+                ip.InfoPanelDestroy -= OnInfoPanelDestroy;
+                icon.SetEnabled(true);
+                _icons.Remove(ip.Exhibit.id);
+                _panels.Remove(ip.Exhibit.id);
+                this.InfoPanelDestroyed?.Invoke(this, exhibit);
             }
         }
 
-        public void SetExhibit(GameObject parent, SerializeableExhibit exhibit)
+        public void SetExhibit(SerializeableExhibit exhibit)
         {
             GameObject infoObj;
-            if (_infoPanels.TryGetValue(parent, out infoObj))
+            if (_panels.TryGetValue(DEFAULT_KEY, out infoObj))
             {
                 infoObj.GetComponent<InfoPanel>().SetLoadingState(false);
                 infoObj.GetComponent<InfoPanel>().Exhibit = exhibit;
+                _panels.UpdateKey(DEFAULT_KEY, exhibit.id);
+                _icons.UpdateKey(DEFAULT_KEY, exhibit.id);
             }
             else Debug.LogWarning("No exhibit found for this gameObject");
         }
 
-        public void Close(int exhibitId)
-        {
-            foreach(KeyValuePair<GameObject, GameObject> kvp in _infoPanels)
-            {
-                InfoPanel ip = kvp.Value.GetComponent<InfoPanel>();
-                if (ip.Exhibit.id == exhibitId)
-                {
-                    InfoIcon ts = kvp.Key.GetComponent<InfoIcon>();
-                    ts.SetEnabled(true);
-                    Destroy(kvp.Value);
-                    _infoPanels.Remove(kvp.Key);
-                }
-            }
-        }
-
-        public void Remove(GameObject parent)
+        public void Remove(int exhibitId = DEFAULT_KEY)
         {
             GameObject panelObj;
-            if (_infoPanels.TryGetValue(parent, out panelObj))
+            InfoIcon icon;
+            if (_panels.TryGetValue(exhibitId, out panelObj) && _icons.TryGetValue(exhibitId, out icon))
             {
-                _infoPanels.Remove(parent);
+                _panels.Remove(exhibitId);
+                _icons.Remove(exhibitId);
+                icon.SetEnabled(true);
                 Destroy(panelObj);
             }
         }
