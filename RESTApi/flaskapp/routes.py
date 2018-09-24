@@ -21,7 +21,7 @@ def hello_world():
 
 @bp.route("/setup")
 def setup():
-    init_db()
+    # init_db()
     trainAndTest.train()
     return "success"
 
@@ -43,7 +43,7 @@ def recognize_image():
         return Response("Bild nicht erkannt", status=500)
     jp = JsonParser(os.path.join(os.getcwd(), "flaskapp", "data.JSON"))
     jp.parse()
-    # objectId = 174
+    objectId = 174
     exh = jp.get_item_by_id(objectId)
 
     #db = get_db()

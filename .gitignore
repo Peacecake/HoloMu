@@ -145,7 +145,7 @@ venv.bak/
 .mypy_cache/
 
 # tmp folder regarding img upload
-/tmp
+/RESTApi/flaskapp/tmp
 
 # Object Recognition
 RESTApi/flaskapp/images
