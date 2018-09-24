@@ -4,30 +4,35 @@ import random
 
 def calcRecommendation(watched_name, watched_cat):
     db = get_db()
-    propSumOtherCat = []
     watchedSameCat = 1.9
-    watchedExhibit = 0.2
+    watchedExhibit = 1.1
+    otherExhibit = 1.2
 
-    lastRow = db.execute("SELECT * FROM recommend WHERE ID=(SELECT MAX(ID) FROM recommend)");
-    for data_set in lastRow:
-        newData = json.loads(data_set["data"])
-        for exhibit_data in newData:
-            if watched_name != exhibit_data["e_name"] and watched_cat == exhibit_data["e_cat"]:
-                exhibit_data["e_prop"] = exhibit_data["e_prop"] * watchedSameCat
-                propSumOtherCat.append(exhibit_data["e_prop"])
-            elif watched_name == exhibit_data["e_name"]:
-                exhibit_data["e_prop"] = exhibit_data["e_prop"]* watchedExhibit
-                propSumOtherCat.append(exhibit_data["e_prop"])
-        for exhibit_data in newData:
-            if watched_cat != exhibit_data["e_cat"]:
-                exhibit_data["e_prop"] = (1.0 - float(sum(propSumOtherCat))) / 3.0
-        return newData
+    weights_sum = 0
+    lastRow = db.execute("SELECT * FROM recommend WHERE ID=(SELECT MAX(ID) FROM recommend)").fetchone()
+    newData = json.loads(lastRow["data"])
+    print(newData)
+    for exhibit_data in newData:
+        if watched_name != exhibit_data["e_name"] and watched_cat == exhibit_data["e_cat"]:
+            exhibit_data["e_prop"] = exhibit_data["e_prop"] * watchedSameCat
+            weights_sum += exhibit_data["e_prop"]
+        elif watched_name == exhibit_data["e_name"]:
+            exhibit_data["e_prop"] = exhibit_data["e_prop"] * watchedExhibit
+            weights_sum += exhibit_data["e_prop"]
+        else:
+            exhibit_data["e_prop"] = exhibit_data["e_prop"] * otherExhibit
+            weights_sum += exhibit_data["e_prop"]
+
+    for exhibit_data in newData:
+        exhibit_data["e_prop"] = exhibit_data["e_prop"] / weights_sum
+    return newData
+
 
 def recommendExhibit():
     db = get_db()
     exhibitNames = []
     weights = []
-    currentRow = db.execute("SELECT * FROM recommend WHERE ID=(SELECT MAX(ID) FROM recommend)");
+    currentRow = db.execute("SELECT * FROM recommend WHERE ID=(SELECT MAX(ID) FROM recommend)")
     for data_set in currentRow:
         data = json.loads(data_set["data"])
         for exhibit_data in data:
