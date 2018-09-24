@@ -140,13 +140,14 @@ if __name__ == "__main__":
   #print('\nEvaluation time (1-image): {:.3f}s\n'.format(end-start))
   template = "{} (score={:0.5f})"
   value = 0.60 # to be sure the right image is recognized
+  minvalue = 0.55 # minimum value say its the recommended image
   for i in top_k:
     #print(template.format(labels[i], results[i]))
     if results[i] > value:
       image = (labels[i])
       print (image)
       #print ("Recognized Image = " + str(image) + "\n")
-    else:
+    elif results[i] < value and results[i] > minvalue:
       nearestValue= find_nearest(results, value)
       if results[i] == nearestValue:
         #print ("\nNicht eindeutig erkannt!\nBester Treffer: ")

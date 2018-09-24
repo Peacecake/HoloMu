@@ -14,7 +14,7 @@ def trainOrTest(testImagePath):
             if char.isdigit():
                 objectId = char
                 return objectId
-            return "No valid id recognized"
+            return ""
     else:
         print "training..."
         training_path = os.path.join(os.getcwd(), "flaskapp","images")

@@ -40,7 +40,7 @@ def recognize_image():
     print "-----------"
     print objectId
     print "-----------"
-    if objectId is None:
+    if objectId is "":
         return Response("Bild nicht erkannt", status=500)
     jp = JsonParser(os.path.join(os.getcwd(), "flaskapp", "data.JSON"))
     jp.parse()
