@@ -8,12 +8,13 @@ from . import trainAndTest
 from . import label_image
 import os
 from collections import Counter
+import recommend
 
 bp = Blueprint("routes", __name__)
 
 @bp.route("/")
 def hello_world():
-    #init_db()
+    init_db()
     db = get_db()
     result = db.execute("SELECT * FROM data;").fetchall()
     print (result)
@@ -46,51 +47,27 @@ def recognize_image():
     objectId = 174
     exh = jp.get_item_by_id(objectId)
 
-    #db = get_db()
-    #db.execute("INSERT INTO data (e_id, e_category) VALUES (?, ?)", (objectId, jp.get_value_by_key(objectId, "category")));
-    #db.commit()
-    #res = db.execute("SELECT * from data;").fetchall()
-    #print(res)
+    db = get_db()
+    db.execute("INSERT INTO data (e_id, e_category) VALUES (?, ?)", (objectId, jp.get_value_by_key(objectId, "category")));
+    db.commit()
+    res = db.execute("SELECT * from data;").fetchall()
 
-    # upl.delete_file()
+    upl.delete_file()
     return exh
 
 @bp.route("/recommend/<int:watched_exhibit_id>")
 def recommend_exhibit(watched_exhibit_id):
-    ##category = db.execute("SELECT e_category from data;").fetchall()
-    #category = db.execute("SELECT e_category, count(*) FROM data GROUP BY e_category;").fetchall()
-    ##recommendList = []
-    ##resultList = []
-    #maxProp = 100
-    #defaultProp = 0.5
-    #for element in range(len(category)):
-    #    dictElement = dict(category[element])
-    #    watchedCount = dictElement["count(*)"]
-    #    currentRecommendResult = maxProp - (1/(defaultProp * watchedCount) *50) #die 50 ist eine magic number um den Wert deutlicher zu machen, da er aber auf beide Berechnungen angewandt wird darf man es machen(kommutativ oder so?)
-    #    #recommendList.append(dictElement["e_category"] + ";" +str(currentRecommendResult))
-    #    #result = searchForHighestValue(recommendList, currentRecommendResult)
-    #    zwischenergebnis = dictElement["e_category"] + ";" + str(currentRecommendResult) +"%"
-    #    print zwischenergebnis
-    #    #resultList.append(zwischenergebnis.split(";")[1])
-    #init_db()
-    print (watched_exhibit_id)
-
+    db = get_db()
     jp = JsonParser(os.path.join(os.getcwd(), "flaskapp", "data.JSON"))
     jp.parse()
-    e_name = jp.get_value_by_key(watched_exhibit_id, "name")
-    e_cat = jp.get_value_by_key(watched_exhibit_id, "category")
-    print(e_name, e_cat)
+    watched_name = jp.get_value_by_key(watched_exhibit_id, "name")
+    watched_cat = jp.get_value_by_key(watched_exhibit_id, "category")
 
-    db = get_db()
-    result = db.execute("SELECT * FROM recommend;").fetchall()
-    for data_set in result:
-        x = json.loads(data_set["data"])
-        print(x)
-        print(type(x))
-        for exhibit_data in x:
-            print exhibit_data["e_name"]
-            print exhibit_data["e_prop"]
+    recommendData = recommend.calcRecommendation(watched_name, watched_cat)
+    result = db.execute("INSERT INTO recommend (data) VALUES (?)", (json.dumps(recommendData),))
+    db.commit()
 
+    recommendedExhibit = recommend.recommendExhibit()
 
+    return "Alle Exponate sind super! Vll interessiert dich das besonders: " + recommendedExhibit
 
-    return "Alle Exponate sind super!"

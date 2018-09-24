@@ -31,9 +31,21 @@ public class GameController : MonoBehaviour
         Ui = GetComponent<MainUIManager>();
     }
 
-    void OnInfoPanelDestroyed(object sender)
+    public void OnInfoIconClick(GameObject clickedObject)
     {
-        this.Api.MakeRequest(new ApiRequest(RequestType.recommend));
+        InfoIcon icon = clickedObject.GetComponent<InfoIcon>();
+        icon.SetEnabled(false);
+        this.InfoPanelManager.Add(icon);
+        this.PhotoCapturer.TakePicture(0);
+    }
+
+    void OnInfoPanelDestroyed(object sender, SerializeableExhibit exhibit)
+    {
+        ApiRequest request = new ApiRequest(RequestType.recommend)
+        {
+            ExhibitId = exhibit.id
+        };
+        this.Api.MakeRequest(request);
     }
 
     ApiConnector LoadApiConnector()
@@ -43,7 +55,7 @@ public class GameController : MonoBehaviour
             _api = GetComponent<ApiConnector>();
             _api.BaseUrl = Settings.baseUrl;
             _api.ResponseRetrieved += OnApiResponseRetrieved;
-            _api.ErrorOccurred += OnApiError;
+            // _api.ErrorOccurred += OnApiError;
         }
         return _api;
     }
@@ -55,15 +67,36 @@ public class GameController : MonoBehaviour
             switch (request.Type)
             {
                 case RequestType.recommend:
-                    RecommenderResult result = request.Result as RecommenderResult;
-                    Ui.ShowMessage("Unsere Empfehlung", result.Recommendation);
+                    RecommenderResult recResult = request.Result as RecommenderResult;
+                    Ui.ShowMessage("Unsere Empfehlung", recResult.Recommendation);
                     break;
                 case RequestType.recognize:
+                    ImageRecognitionResult irResult = request.Result as ImageRecognitionResult;
+                    this.InfoPanelManager.SetExhibit(irResult.SExhibit);
                     break;
                 case RequestType.setup:
                     VuforiaBehaviour.Instance.enabled = true;
                     Destroy(this.SetupManager);
+                    this.Ui.ShowMessage("Setup erfolgreich", "HoloMu ist jetzt eingerichtet. Klicken Sie auf die Hologramme um Informationen über die dazugehörigen Exponate zu erhalten.");
                     break;
+            }
+        }
+        else
+        {
+            if (request.Type.Equals(RequestType.setup))
+            {
+                this.SetupManager.GetComponent<SetupManager>().HandleSetupError(request.Result.ErrorMessage);
+            }
+            else
+            {
+                Debug.LogError(request.Result.ErrorMessage);
+                Ui.ShowMessage("Netzwerk Fehler", request.Result.ErrorMessage);
+                switch (request.Type)
+                {
+                    case RequestType.recognize:
+                        this.InfoPanelManager.Remove();
+                        break;
+                }
             }
         }
     }
@@ -90,11 +123,11 @@ public class GameController : MonoBehaviour
         Ui.ShowMessage("Kamera Fehler", error.Message);
     }
 
-    void OnApiError(object sender, Error error)
-    {
-        Debug.LogError(error.Message);
-        Ui.ShowMessage("Netzwerk Fehler", error.Message);
-    }
+    //void OnApiError(object sender, Error error)
+    //{
+    //    Debug.LogError(error.Message);
+    //    Ui.ShowMessage("Netzwerk Fehler", error.Message);
+    //}
 
     GameSettings LoadSettings()
     {
@@ -125,11 +158,5 @@ public class GameController : MonoBehaviour
     {
         _settings = newSettings;
         PersistSettings();
-    }
-
-    public void HandleExhibitClose(SerializeableExhibit exhibit)
-    {
-        ApiRequest recommendRequest = new ApiRequest(RequestType.recommend);
-        _api.MakeRequest(recommendRequest);
     }
 }

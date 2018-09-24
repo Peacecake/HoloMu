@@ -35,7 +35,8 @@ def init_db():
     for exhibit in jp.data["exhibits"]:
         init_row_data.append({
             "e_name": exhibit["name"],
-            "e_prop": 1.0 / len(jp.data["exhibits"])
+            "e_prop": 1.0 / len(jp.data["exhibits"]),
+            "e_cat": exhibit["category"]
         })
 
     db.execute("INSERT INTO recommend (data) VALUES (?)", (json.dumps(init_row_data),))
