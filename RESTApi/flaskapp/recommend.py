@@ -4,9 +4,9 @@ import random
 
 def calcRecommendation(watched_name, watched_cat):
     db = get_db()
-    watchedSameCat = 1.9
-    watchedExhibit = 1.1
-    otherExhibit = 1.2
+    watchedSameCat = 2
+    watchedExhibit = 1
+    otherExhibit = 1.1
 
     weights_sum = 0
     lastRow = db.execute("SELECT * FROM recommend WHERE ID=(SELECT MAX(ID) FROM recommend)").fetchone()
@@ -28,7 +28,7 @@ def calcRecommendation(watched_name, watched_cat):
     return newData
 
 
-def recommendExhibit():
+def recommendExhibit(watched_exhibit):
     db = get_db()
     exhibitNames = []
     weights = []
@@ -37,12 +37,14 @@ def recommendExhibit():
         data = json.loads(data_set["data"])
         for exhibit_data in data:
             print exhibit_data
-            weights.append(exhibit_data["e_prop"])
-            exhibitNames.append(exhibit_data["e_name"])
+            if exhibit_data["e_name"] != watched_exhibit:
+                weights.append(exhibit_data["e_prop"])
+                exhibitNames.append(exhibit_data["e_name"])
     recommendedExhibit = weightedRands(exhibitNames, weights)
     return recommendedExhibit
 
 # returns random value from exhibitNames list weighted by the e_props
+# Retrieved from: https://stackoverflow.com/questions/12096819
 def weightedRands(exhibits, weights):
     r = random.uniform(0, sum(weights))
     for n,v in map(None, exhibits,[sum(weights[:x+1]) for x in range(len(weights))]):

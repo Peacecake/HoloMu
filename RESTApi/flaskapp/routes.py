@@ -67,7 +67,7 @@ def recommend_exhibit(watched_exhibit_id):
     db.execute("INSERT INTO recommend (data) VALUES (?)", (json.dumps(recommendData),))
     db.commit()
 
-    recommendedExhibit = recommend.recommendExhibit()
+    recommendedExhibit = recommend.recommendExhibit(watched_name)
 
     return "Alle Exponate sind super! Vll interessiert dich das besonders: " + recommendedExhibit
 
