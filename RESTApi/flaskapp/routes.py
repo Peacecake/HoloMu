@@ -44,7 +44,7 @@ def recognize_image():
         return Response("Bild nicht erkannt", status=500)
     jp = JsonParser(os.path.join(os.getcwd(), "flaskapp", "data.JSON"))
     jp.parse()
-    # objectId = 174
+    #objectId = 174
     exh = jp.get_item_by_id(objectId)
 
     db = get_db()
@@ -55,7 +55,7 @@ def recognize_image():
     upl.delete_file()
     return exh
 
-@bp.route("/recommend/<int:watched_exhibit_id>")
+@bp.route("/recommend/<string:watched_exhibit_id>")
 def recommend_exhibit(watched_exhibit_id):
     db = get_db()
     jp = JsonParser(os.path.join(os.getcwd(), "flaskapp", "data.JSON"))
@@ -64,7 +64,7 @@ def recommend_exhibit(watched_exhibit_id):
     watched_cat = jp.get_value_by_key(watched_exhibit_id, "category")
 
     recommendData = recommend.calcRecommendation(watched_name, watched_cat)
-    result = db.execute("INSERT INTO recommend (data) VALUES (?)", (json.dumps(recommendData),))
+    db.execute("INSERT INTO recommend (data) VALUES (?)", (json.dumps(recommendData),))
     db.commit()
 
     recommendedExhibit = recommend.recommendExhibit()
