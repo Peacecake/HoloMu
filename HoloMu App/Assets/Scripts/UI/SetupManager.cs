@@ -13,7 +13,7 @@ public class SetupManager : MonoBehaviour
 {
     public Button SetupButton;
     public Button ChangeIPButton;
-    public TextMesh IPText = null;
+    public Text IPText = null;
     public Loader Loader = null;
     public GameController Controller = null;
 
