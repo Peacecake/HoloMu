@@ -5,8 +5,8 @@ import random
 def calcRecommendation(watched_name, watched_cat):
     db = get_db()
     watchedSameCat = 2
-    watchedExhibit = 1
-    otherExhibit = 1.1
+    watchedExhibit = 0.9
+    otherExhibit = 1
 
     weights_sum = 0
     lastRow = db.execute("SELECT * FROM recommend WHERE ID=(SELECT MAX(ID) FROM recommend)").fetchone()
