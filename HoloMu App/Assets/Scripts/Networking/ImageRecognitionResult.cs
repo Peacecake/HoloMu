@@ -13,6 +13,11 @@ namespace HoloMu.Networking
 
         public ImageRecognitionResult(bool isSuccessful, string errorMessage, string resultText) : base(isSuccessful, errorMessage)
         {
+            if (resultText.Equals(""))
+            {
+                isSuccessful = false;
+                errorMessage = "Exponat nicht erkannt. Versuchen Sie es bitte noch einmal!";
+            }
             if (isSuccessful)
             {
                 //  XMLParser parser = new XMLParser();

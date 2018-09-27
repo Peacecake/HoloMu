@@ -55,7 +55,6 @@ public class GameController : MonoBehaviour
             _api = GetComponent<ApiConnector>();
             _api.BaseUrl = Settings.baseUrl;
             _api.ResponseRetrieved += OnApiResponseRetrieved;
-            // _api.ErrorOccurred += OnApiError;
         }
         return _api;
     }
@@ -122,12 +121,6 @@ public class GameController : MonoBehaviour
         Debug.Log(error.Message);
         Ui.ShowMessage("Kamera Fehler", error.Message);
     }
-
-    //void OnApiError(object sender, Error error)
-    //{
-    //    Debug.LogError(error.Message);
-    //    Ui.ShowMessage("Netzwerk Fehler", error.Message);
-    //}
 
     GameSettings LoadSettings()
     {

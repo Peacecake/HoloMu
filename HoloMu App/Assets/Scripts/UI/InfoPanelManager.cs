@@ -52,10 +52,12 @@ namespace HoloMu.UI
         public void SetExhibit(SerializeableExhibit exhibit)
         {
             GameObject infoObj;
-            if (_panels.TryGetValue(DEFAULT_KEY, out infoObj))
+            InfoIcon icon;
+            if (_panels.TryGetValue(DEFAULT_KEY, out infoObj) && _icons.TryGetValue(DEFAULT_KEY, out icon))
             {
                 infoObj.GetComponent<InfoPanel>().SetLoadingState(false);
                 infoObj.GetComponent<InfoPanel>().Exhibit = exhibit;
+                icon.SetEnabled(true);
                 _panels.UpdateKey(DEFAULT_KEY, exhibit.id);
                 _icons.UpdateKey(DEFAULT_KEY, exhibit.id);
             }
@@ -68,6 +70,7 @@ namespace HoloMu.UI
             InfoIcon icon;
             if (_panels.TryGetValue(exhibitId, out panelObj) && _icons.TryGetValue(exhibitId, out icon))
             {
+                panelObj.GetComponent<InfoPanel>().InfoPanelDestroy -= OnInfoPanelDestroy;
                 _panels.Remove(exhibitId);
                 _icons.Remove(exhibitId);
                 icon.SetEnabled(true);

@@ -1,5 +1,4 @@
-﻿using HoloMu.Persistance;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -68,15 +67,7 @@ namespace HoloMu.Networking
         private void HandleRequestResult(UnityWebRequest www, ApiRequest request)
         {
             request.HandleResult(!(www.isNetworkError || www.isHttpError), www.downloadHandler.text, www.error);
-            if (!request.Result.IsSuccessful && this.ErrorOccurred != null)
-            {
-                this.ErrorOccurred.Invoke(this, new Error(ErrorType.ApiRequest, www.error));
-            }
-
-            if (this.ResponseRetrieved != null)
-            {
-                this.ResponseRetrieved.Invoke(this, request);
-            }
+            this.ResponseRetrieved?.Invoke(this, request);
         }
     }
 }
