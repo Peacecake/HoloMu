@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace HoloMu.Networking
+﻿namespace HoloMu.Networking
 {
     public class RecommenderResult : RequestResult
     {

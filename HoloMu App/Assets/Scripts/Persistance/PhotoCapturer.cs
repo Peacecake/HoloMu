@@ -22,22 +22,15 @@ namespace HoloMu.Persistance
         /// </summary>
         public event ErrorHandler ErrorOccured;
 
-        /// <summary>
-        /// Check this, if the taken image should not get deleted.
-        /// </summary>
-        public bool KeepImage = true;
-
         private PhotoCapture _photoCapture = null;
         private string _filePath = "";
-        private int _instanceID;
 
         /// <summary>
         /// Takes a picture of current view. Overwrite PhotoTaken event in order to get image as byte array.
         /// ATTENTION: If you use unity to run directly, this will take a picture using your webcam.
         /// </summary>
-        public void TakePicture(int instanceID)
+        public void TakePicture()
         {
-            _instanceID = instanceID;
             VuforiaBehaviour.Instance.enabled = false;
             PhotoCapture.CreateAsync(false, OnPhotoCaptureCreated);
         }
@@ -103,7 +96,7 @@ namespace HoloMu.Persistance
 
             if (this.PhotoTaken != null)
             {
-                this.PhotoTaken.Invoke(this, _instanceID, imgAsBytes);
+                this.PhotoTaken.Invoke(this, imgAsBytes);
             }
         }
 
@@ -112,10 +105,6 @@ namespace HoloMu.Persistance
             VuforiaBehaviour.Instance.enabled = true;
             _photoCapture.Dispose();
             _photoCapture = null;
-            //if (!this.KeepImage)
-            //{
-            //    File.Delete(_filePath);
-            //}
             _filePath = "";
         }
     }

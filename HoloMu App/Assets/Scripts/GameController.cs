@@ -36,7 +36,7 @@ public class GameController : MonoBehaviour
         InfoIcon icon = clickedObject.GetComponent<InfoIcon>();
         icon.SetEnabled(false);
         this.InfoPanelManager.Add(icon);
-        this.PhotoCapturer.TakePicture(0);
+        this.PhotoCapturer.TakePicture();
     }
 
     void OnInfoPanelDestroyed(object sender, SerializeableExhibit exhibit)
@@ -111,7 +111,7 @@ public class GameController : MonoBehaviour
         return _photo;
     }
 
-    void OnPhotoTaken(object sender, int instanceId, byte[] file)
+    void OnPhotoTaken(object sender, byte[] file)
     {
         this.Api.MakeRequest(new ApiRequest(RequestType.recognize, file));
     }

@@ -8,7 +8,6 @@ namespace HoloMu.Networking
     public class ApiConnector : MonoBehaviour
     {
         public event ApiRequestResultHandler ResponseRetrieved;
-        public event ErrorHandler ErrorOccurred;
 
         public string BaseUrl;
 
@@ -28,19 +27,17 @@ namespace HoloMu.Networking
                 case RequestType.recommend:
                     StartCoroutine(Get(request));
                     break;
-                case RequestType.Test:
-                    StartCoroutine(GetTextFrom(request));
-                    break;
             }
         }
 
         private IEnumerator Upload(ApiRequest request)
         {
-            List<IMultipartFormSection> formData = new List<IMultipartFormSection>();
-            formData.Add(new MultipartFormFileSection("file", request.File, "test-image.png", "image/png"));
-            using(_www = UnityWebRequest.Post(request.URL, formData))
+            List<IMultipartFormSection> formData = new List<IMultipartFormSection>
             {
-                // _www.SetRequestHeader("Content-Type", "multipart/form-data");
+                new MultipartFormFileSection("file", request.File, "test-image.png", "image/png")
+            };
+            using (_www = UnityWebRequest.Post(request.URL, formData))
+            {
                 yield return _www.SendWebRequest();
                 HandleRequestResult(_www, request);
             }
