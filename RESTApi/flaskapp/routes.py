@@ -33,18 +33,12 @@ def recognize_image():
     if upload_result is not True:
         return Response(upload_result, status=500)
 
-    # Image recognition stuff comes here
-    print "testImagePath " + upl.uploaded_file
+    # Image recognition
     objectId = trainAndTest.trainOrTest(upl.uploaded_file)
-    print ("Recognizing image: " + upl.uploaded_file)
-    print "-----------"
-    print objectId
-    print "-----------"
     if objectId is "":
         return Response("Bild nicht erkannt", status=500)
     jp = JsonParser(os.path.join(os.getcwd(), "flaskapp", "data.JSON"))
     jp.parse()
-    #objectId = 174
     exh = jp.get_item_by_id(objectId)
 
     db = get_db()

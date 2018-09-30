@@ -1,6 +1,4 @@
-﻿using HoloMu.Persistance;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -8,7 +6,6 @@ namespace HoloMu.Networking
 {
     public class ImageRecognitionResult : RequestResult
     {
-        public Exhibit Exhibit { get; private set; }
         public SerializeableExhibit SExhibit { get; private set; }
 
         public ImageRecognitionResult(bool isSuccessful, string errorMessage, string resultText) : base(isSuccessful, errorMessage)
@@ -20,7 +17,6 @@ namespace HoloMu.Networking
             }
             if (isSuccessful)
             {
-                //  XMLParser parser = new XMLParser();
                 resultText = resultText.Replace("u'", "'");
                 resultText = resultText.Replace("'", "\"");
                 resultText = System.Text.RegularExpressions.Regex.Unescape(@resultText);
@@ -33,7 +29,6 @@ namespace HoloMu.Networking
                 oldValues.Insert(0, desc);
                 e.moreinfos = oldValues.ToArray();
                 this.SExhibit = e;
-                // this.Exhibit = parser.ParseExhibit(resultText);
             }
         }
     }

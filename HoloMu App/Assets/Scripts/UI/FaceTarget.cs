@@ -1,6 +1,4 @@
 ﻿using HoloToolkit.Unity;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace HoloMu.UI
@@ -17,6 +15,5 @@ namespace HoloMu.UI
             if (this.FlippedYAxis)
                 transform.rotation = transform.rotation * Quaternion.Euler(0f, 180f, 0f);
         }
-
     }
 }

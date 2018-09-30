@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QCARConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="qcar_config.xsd">
+  <Tracking>
+    <ImageTarget name="Toshiba_Target" size="0.200000 0.133333" />
+    <ImageTarget name="Osborne_1_Target" size="0.200000 0.133333" />
+    <ImageTarget name="Imac_Target" size="0.200000 0.133333" />
+    <ImageTarget name="IBM_Target" size="0.200000 0.133333" />
+    <ImageTarget name="Compaq_III_Target" size="0.200000 0.133333" />
+    <ImageTarget name="Commodore_8296_Target" size="0.200000 0.133333" />
+  </Tracking>
+</QCARConfig>

@@ -1,12 +1,7 @@
 ﻿using HoloMu;
 using HoloMu.Networking;
 using HoloMu.Persistance;
-using HoloToolkit.UI.Keyboard;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class SetupManager : MonoBehaviour
@@ -41,8 +36,6 @@ public class SetupManager : MonoBehaviour
     {
         Loader.SetLoading(false);
         _settings = Controller.Settings;
-
-        // Controller.Api.ErrorOccurred += OnApiError;
     }
 
     public void HandleSetupError(string errorMessage)
@@ -51,13 +44,6 @@ public class SetupManager : MonoBehaviour
         this.ChangeIPButton.interactable = true;
         Loader.SetLoading(false, errorMessage);
     }
-
-    //private void OnApiError(object sender, Error error)
-    //{
-    //    this.SetupButton.interactable = true;
-    //    this.ChangeIPButton.interactable = true;
-    //    Loader.SetLoading(false, error.Message);
-    //}
 
     private void Update()
     {
