@@ -12,14 +12,6 @@ import recommend
 
 bp = Blueprint("routes", __name__)
 
-@bp.route("/")
-def hello_world():
-    init_db()
-    db = get_db()
-    result = db.execute("SELECT * FROM data;").fetchall()
-    print (result)
-    return "Hello World!"
-
 @bp.route("/setup")
 def setup():
     init_db()
@@ -40,11 +32,6 @@ def recognize_image():
     jp = JsonParser(os.path.join(os.getcwd(), "flaskapp", "data.JSON"))
     jp.parse()
     exh = jp.get_item_by_id(objectId)
-
-    db = get_db()
-    db.execute("INSERT INTO data (e_id, e_category) VALUES (?, ?)", (objectId, jp.get_value_by_key(objectId, "category")));
-    db.commit()
-    res = db.execute("SELECT * from data;").fetchall()
 
     upl.delete_file()
     return exh
