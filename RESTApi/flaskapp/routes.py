@@ -69,5 +69,5 @@ def recommend_exhibit(watched_exhibit_id):
 
     recommendedExhibit = recommend.recommendExhibit(watched_name)
 
-    return "Alle Exponate sind super! Vll interessiert dich das besonders: " + recommendedExhibit
+    return "Vielleicht interessiert Sie das besonders: " + recommendedExhibit
 
